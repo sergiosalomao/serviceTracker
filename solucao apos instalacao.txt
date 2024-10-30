@@ -1,0 +1,5 @@
+problemas relvidos depois do git clone
+
+npm install bootstrap
+npm install lodash
+ npm install -D sass

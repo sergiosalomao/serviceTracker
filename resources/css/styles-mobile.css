@@ -1,0 +1,38 @@
+
+
+@media (max-width: 991.98px) {
+ 
+  #sidebarCollapse{
+    z-index:-999;
+  }
+
+  #menu-rapido-sair{
+    display: none;
+  }
+
+  #menu-rapido-titulo{
+    display: show;
+  }
+
+  .mobile{
+    display: show;
+  }
+ 
+}
+
+
+
+@media (min-width: 1000px) {
+ 
+
+  #menu-rapido-titulo{
+    display: none;
+  }
+  .mobile{
+    display: none;
+  }
+
+ 
+ 
+}
+
