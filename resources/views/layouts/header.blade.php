@@ -47,13 +47,11 @@
     <script defer src="{{ env('APP_LINK_JS') }}/fontawesome640/js/brands.js"></script>
     <script defer src="{{ env('APP_LINK_JS') }}/fontawesome640/js/solid.js"></script>
     <script defer src="{{ env('APP_LINK_JS') }}/fontawesome640/js/fontawesome.js"></script>
-@php
-    $path = '';
-@endphp
 
 
-      <!-- Scripts -->
-    @vite([ $path . 'resources/sass/app.scss', $path . 'resources/js/app.js'])
+         <!-- Scripts -->
+    @vite(['resources/sass/app.scss', 'resources/js/app.js'])
+   
 
 </head>
 
