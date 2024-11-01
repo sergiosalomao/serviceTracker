@@ -33,24 +33,34 @@
                         <input id="data_solicitacao" name="data_solicitacao" type="text" class="form-control form-control-sm mb-4" value="{{ $dados->data_solicitacao }}">
 
                     </div>
+                    <div class="col-lg-12">
+                        <label class="labels-form">Entrada</label>
+                        <span class="h4 fa fa-question-circle-o mx-2" style="color:cadetblue;cursor: pointer;" title="Entrada"></span>
+                        <input id="entrada" name="entrada" type="text" class=" form-control form-control-sm mb-4" value="{{$dados->entrada}}">
+                    </div>
 
+                    <div class="col-lg-12">
+                        <label class="labels-form">Desconto</label>
+                        <span class="h4 fa fa-question-circle-o mx-2" style="color:cadetblue;cursor: pointer;" title="O valor total da compra não pode ser alterado."></span>
+                        <input id="desconto" name="desconto" type="text" class=" form-control form-control-sm mb-4" value="{{$dados->desconto}}">
+                    </div>
 
                     <div class="col-lg-12">
                         <label class="labels-form">Valor</label>
                         <span class="h4 fa fa-question-circle-o mx-2" style="color:cadetblue;cursor: pointer;" title="O valor total da compra não pode ser alterado."></span>
                         <input id="valor" name="valor" type="text" class=" form-control form-control-sm mb-4" readonly value="{{$dados->valor}}">
                     </div>
-                 
+
 
                     <div class="col-lg-2"><label class="labels-form">Status</label>
-                    <select name="status" type="text" class="form-select form-control ">
-                        <option value="{{ $dados->status }}" selected>{{ $dados->status }}</option>
-                        <option value="AGUARDANDO APROVAÇÃO">AGUARDANDO APROVAÇÃO</option>
-                        <option value="EM ANDAMENTO">EM ANDAMENTO</option>
-                        <option value="CONCLUIDA">CONCLUIDA</option>
-                    </select>
+                        <select name="status" type="text" class="form-select form-control ">
+                            <option value="{{ $dados->status }}" selected>{{ $dados->status }}</option>
+                            <option value="AGUARDANDO APROVAÇÃO">AGUARDANDO APROVAÇÃO</option>
+                            <option value="EM ANDAMENTO">EM ANDAMENTO</option>
+                            <option value="CONCLUIDA">CONCLUIDA</option>
+                        </select>
 
-                </div>
+                    </div>
 
 
                     <div class="row mt-3">
@@ -75,5 +85,21 @@
 
             });
         </script>
-    
+
+        <script>
+            $('#entrada').on('change', function() {
+                var entrada = document.getElementById("entrada").value;
+                let valor = document.getElementById("valor").value;
+                let desconto = document.getElementById("desconto").value;
+                $("#valor").val((valor - (entrada - desconto)));
+            });
+        </script>
+        <script>
+            $('#desconto').on('change', function() {
+                var entrada = document.getElementById("entrada").value;
+                let valor = document.getElementById("valor").value;
+                let desconto = document.getElementById("desconto").value;
+                $("#valor").val((valor - (entrada - desconto)));
+            });
+        </script>
         @endsection

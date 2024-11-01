@@ -22,17 +22,27 @@
                 @php
                 $valor = number_format((float) request('valor'), 2, '.', '');
                 @endphp
-
+                <div class="col-lg-12">
+                    <label class="labels-form">Entrada</label>
+                    <span class="h4 fa fa-question-circle-o mx-2" style="color:cadetblue;cursor: pointer;" title="O valor total nao pode ser alterado."></span>
+                    <input id="entrada" name="entrada" type="text" class=" form-control form-control-sm mb-4"  value="{{ number_format((float) 0, 2, '.', ''); }}">
+                </div>
+                <div class="col-lg-12">
+                    <label class="labels-form">Desconto</label>
+                    <span class="h4 fa fa-question-circle-o mx-2" style="color:cadetblue;cursor: pointer;" title="O valor total nao pode ser alterado."></span>
+                    <input id="desconto" name="desconto" type="text" class=" form-control form-control-sm mb-4"  value="{{ number_format((float) 0, 2, '.', ''); }}">
+                </div>
+             
                 <div class="col-lg-12">
                     <label class="labels-form">Valor Total</label>
                     <span class="h4 fa fa-question-circle-o mx-2" style="color:cadetblue;cursor: pointer;" title="O valor total nao pode ser alterado."></span>
                     <input id="valor" name="valor" type="text" class=" form-control form-control-sm mb-4" readonly value="{{$valor}}">
                 </div>
-             
 
 
 
-             
+
+
 
                 <div class="row mt-3">
                     <div class="col-12">
@@ -56,20 +66,21 @@
         });
     </script>
 
+
     <script>
-        $('#desconto_porcento').on('change', function() {
-            var desconto_porcento = document.getElementById("desconto_porcento").value;
+        $('#entrada').on('change', function() {
+            var entrada = document.getElementById("entrada").value;
             let valor = document.getElementById("valor").value;
-            let desconto = valor * (desconto_porcento / 100);
-            $("#desconto").val(Math.round(desconto));
+            let desconto = document.getElementById("desconto").value;
+            $("#valor").val((valor - (entrada - desconto)));
         });
     </script>
-     <script>
-            $('#desconto').on('change', function() {
-                var desconto= document.getElementById("desconto").value;
-                let valor = document.getElementById("valor").value;
-                let desc = ((desconto / valor) * 100 );
-                $("#desconto_porcento").val((desc).toFixed(2));
-            });
-        </script>
+    <script>
+        $('#desconto').on('change', function() {
+            var entrada = document.getElementById("entrada").value;
+            let valor = document.getElementById("valor").value;
+            let desconto = document.getElementById("desconto").value;
+            $("#valor").val((valor - (entrada - desconto)));
+        });
+    </script>
     @endsection
