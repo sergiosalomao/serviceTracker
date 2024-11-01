@@ -73,6 +73,8 @@
                         <th class="" style="text-align: center">DATA INICIO</th>
                         <th class="" style="text-align: left">CLIENTE</th>
                         <th class="" style="text-align: center">TEMPO ESTIMADO</th>
+                        <th class="" style="text-align: center">VALOR</th>
+                        
                         <th class="" style="text-align: center">DATA CONCLUSÃO</th>
                         <th class="" style="text-align: center">STATUS</th>
                         <th class="" colspan="1" style="text-align: center">AÇÕES</th>
@@ -83,7 +85,8 @@
                     $valor_pago = 0;
                     $itensVendidos = 0;
                     $tempo = 0;
-                  
+                    $valor = 0;
+                    $formattedTime = 0;
                     @endphp
 
                     @foreach ($dados as $item)
@@ -97,12 +100,13 @@
 
                     $ItensSolicitacoes = App\Models\ItensSolicitacoes::where('solicitacao_id', $item->id)->get();
                     foreach($ItensSolicitacoes as $itemSolicitacao){
-
-                 
-
-
                         $tempo += ($itemSolicitacao['servico']['tempo_estimado'] * $itemSolicitacao->qtd * 60);
                         $formattedTime = \Carbon\CarbonInterval::seconds($tempo)->cascade();
+                    }
+
+                    $ItensSolicitacoes = App\Models\ItensSolicitacoes::where('solicitacao_id', $item->id)->get();
+                    foreach($ItensSolicitacoes as $itemSolicitacao){
+                        $valor += ($itemSolicitacao['servico']['valor'] * $itemSolicitacao->qtd );
                     }
                     @endphp
                     
@@ -116,12 +120,39 @@
                         <td width="60%" style="text-align: left">
                             <span class="table-subtitulos cor-escura"> {{ $item['cliente']['nome'] }}</span>
                         </td>
+                        @if ( $formattedTime)
                         <td width="10%" style="text-align: center">
-                        <span class="table-subtitulos cor-escura"><img src="{{ env('APP_LINK_IMAGES') }}clockmini.png" width="18PX" height="18PX" title="tempo estimado pra concluir a solicitação"> {{  $formattedTime->format('%H:%I')    }}</span>
+                        <span class="table-subtitulos cor-escura"><img src="{{ env('APP_LINK_IMAGES') }}clockmini.png" width="18PX" height="18PX" title="tempo estimado pra concluir a solicitação">
+                         {{  $formattedTime->format('%H:%I')    }}
+                        </span>
                         </td>
+                        @endIf
+
+                        <td width="10%" style="text-align: center">
+                        {{ 'R$ ' . number_format($valor, 2, ',', '.') }}</span>
+                        </td>
+
+
+                        @if ( !$formattedTime)
+                        <td width="10%" style="text-align: center">
+                        <span class="table-subtitulos cor-escura"><img src="{{ env('APP_LINK_IMAGES') }}clockmini.png" width="18PX" height="18PX" title="tempo estimado pra concluir a solicitação">
+                         00:00
+                        </span>
+                        </td>
+                        @endIf
+
+
+
+                        @if ($item->data_final != null)
                         <td width="10%" style="text-align: center">
                             {{ date('d/m/Y', strtotime($item->data_final)) }}
                         </td>
+                        @endIf
+                        @if ($item->data_final == null)
+                        <td width="10%" style="text-align: center">
+                            -
+                        </td>
+                        @endIf
 
                        
 

@@ -19,7 +19,7 @@
         <div class="card-body ">
             <div class="row p-3">
                 <div class="col-6 texto-esquerda">
-                    @if (($solicitacao->status == 'ABERTA') || ($solicitacao->status == 'AGUARDANDO APROVAÇÃO'))
+                    @if (($solicitacao->status == 'EM ANDAMENTO') || ($solicitacao->status == 'AGUARDANDO APROVAÇÃO'))
                     <button class="btn btn-my-primary form-button " type="button" onclick="window.location.href='/carrinho/create/{{ request('id') }}'">Adicionar Serviço</button>
                     @endIf
                 </div>
@@ -55,7 +55,7 @@
                     <th class="" style="text-align: center">TEMPO ESTIMADO TOTAL</th>
                     <th class="" style="text-align: center">VALOR(UND)</th>
                     <th class="" style="text-align: center">VALOR TOTAL</th>
-                    @if (($solicitacao->status == 'ABERTA') || ($solicitacao->status == 'AGUARDANDO APROVAÇÃO'))
+                    @if (($solicitacao->status == 'EM ANDAMENTO') || ($solicitacao->status == 'AGUARDANDO APROVAÇÃO'))
                     <th class="" colspan="3" style="text-align: center">AÇÕES</th>
                     @endIf
                 </tr>
@@ -123,7 +123,7 @@
                 @endif
 
 
-                @if (($solicitacao->status == 'ABERTA' && $total > 0) || ($solicitacao->status == 'AGUARDANDO APROVAÇÃO' && $total > 0))
+                @if (($solicitacao->status == 'EM ANDAMENTO' && $total > 0) || ($solicitacao->status == 'AGUARDANDO APROVAÇÃO' && $total > 0))
                 <td width="1%">
                     <div class=" d-flex align-items-center">
                         <a class="btn-imagens" onclick="setaDadosModal('window.location.href=\'/carrinho/delete/{{ $item->id }}/{{ request('id') }}\'')" data-toggle="modal" data-target="#delete-modal">
@@ -132,11 +132,11 @@
                     </div>
                 </td>
                 @endIf
-                @if ($solicitacao->status == 'ABERTA' && $total == 0)
+                @if ($solicitacao->status == 'CONCLUIDA' )
                 <td width="1%">
 
+                </td>
     </div>
-    </td>
     @endIf
 
 

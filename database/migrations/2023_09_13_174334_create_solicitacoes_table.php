@@ -17,7 +17,7 @@ return new class extends Migration
         Schema::create('solicitacoes', function (Blueprint $table) {
             $table->increments('id');
             $table->date('data_solicitacao')->null();
-            $table->date('data_final')->nullable();
+            $table->date('data_final')->nullable()->default(null);;
             $table->integer('cliente_id')->unsigned();
             $table->foreign('cliente_id')->references('id')->on('clientes');
             $table->decimal('valor', 10, 2)->nullable();
