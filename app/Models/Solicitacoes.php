@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 class Solicitacoes extends Model
 {
     use HasFactory;
-    protected $fillable = ['id', 'data_solicitacao','cliente_id','status','valor','data_final'];
+    protected $fillable = ['id', 'data_solicitacao','cliente_id','status','valor','data_final','entrada','desconto'];
     protected $table = 'solicitacoes';
 
     public function cliente()

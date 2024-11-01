@@ -21,6 +21,8 @@ return new class extends Migration
             $table->integer('cliente_id')->unsigned();
             $table->foreign('cliente_id')->references('id')->on('clientes');
             $table->decimal('valor', 10, 2)->nullable();
+            $table->decimal('entrada', 10, 2)->nullable();
+            $table->decimal('desconto', 10, 2)->nullable();
             $table->string('status')->nullable()->default('AGUARDANDO APROVAÇÃO');
             $table->timestamps();
         });

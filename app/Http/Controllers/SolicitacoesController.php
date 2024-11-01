@@ -59,6 +59,8 @@ class SolicitacoesController extends Controller
         $dataSolicitacao = $dataSolicitacao->merge([
             "data_solicitacao"       => $datainicio,
             "valor"       => (floatval($request->valor)),
+            "entrada"       => (floatval($request->entrada)),
+            "desconto"       => (floatval($request->desconto)),
             "status"       => $request['status'],
         ]);
         Solicitacoes::find($request->id)->update($dataSolicitacao->all());
