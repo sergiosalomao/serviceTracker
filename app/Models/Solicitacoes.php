@@ -17,5 +17,10 @@ class Solicitacoes extends Model
         return $this->belongsTo(Clientes::class, 'cliente_id', 'id');
     }
 
+
+    public function cobrancas()
+    {
+        return $this->hasMany(Cobranca::class);
+    }
     
 }

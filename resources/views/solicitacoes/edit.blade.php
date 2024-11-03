@@ -40,7 +40,7 @@
                     </div>
 
                     <div class="col-lg-12">
-                        <label class="labels-form">Desconto</label>
+                        <label class="labels-form">Desconto(R$)</label>
                         <span class="h4 fa fa-question-circle-o mx-2" style="color:cadetblue;cursor: pointer;" title="O valor total da compra não pode ser alterado."></span>
                         <input id="desconto" name="desconto" type="text" class=" form-control form-control-sm mb-4" value="{{$dados->desconto}}">
                     </div>
@@ -86,20 +86,20 @@
             });
         </script>
 
-        <script>
+        <!-- <script>
             $('#entrada').on('change', function() {
                 var entrada = document.getElementById("entrada").value;
-                let valor = document.getElementById("valor").value;
-                let desconto = document.getElementById("desconto").value;
-                $("#valor").val((valor - (entrada - desconto)));
+            let principal = document.getElementById("principal").value;
+            let desconto = document.getElementById("desconto").value;
+            $("#valor").val((principal - (entrada + desconto)));
             });
         </script>
         <script>
             $('#desconto').on('change', function() {
                 var entrada = document.getElementById("entrada").value;
-                let valor = document.getElementById("valor").value;
-                let desconto = document.getElementById("desconto").value;
-                $("#valor").val((valor - (entrada - desconto)));
+            let principal = document.getElementById("principal").value;
+            let desconto = document.getElementById("desconto").value;
+            $("#valor").val((principal - (entrada + desconto)));
             });
-        </script>
+        </script> -->
         @endsection

@@ -15,7 +15,7 @@ return new class extends Migration
     {
 
         Schema::create('solicitacoes', function (Blueprint $table) {
-            $table->increments('id');
+            $table->id();
             $table->date('data_solicitacao')->null();
             $table->date('data_final')->nullable()->default(null);;
             $table->integer('cliente_id')->unsigned();

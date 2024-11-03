@@ -18,7 +18,26 @@ class FluxosSeeder extends Seeder
 
             [
                 'tipo' => 'CREDITO',
-                'fluxo' =>'VENDAS'
+                'fluxo' =>'SERVIÇOS'
+            ],
+            [
+                'tipo' => 'DEBITO',
+                'fluxo' =>'ENERGIA'
+            ], [
+                'tipo' => 'DEBITO',
+                'fluxo' =>'AGUA'
+            ],
+            [
+                'tipo' => 'DEBITO',
+                'fluxo' =>'PROVEDORES DE INTERNET'
+            ],
+            [
+                'tipo' => 'DEBITO',
+                'fluxo' =>'GASOLINA'
+            ],
+            [
+                'tipo' => 'DEBITO',
+                'fluxo' =>'PAGAMENTO SALARIO FUNCIONARIOS'
             ],
 
         ]);

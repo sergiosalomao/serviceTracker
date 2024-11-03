@@ -78,7 +78,26 @@
 
         
 
-
+        <ul class="list-unstyled components mb-3">
+                <li class="">
+                    <a href="#cobrancas" data-toggle="collapse" aria-expanded="false" class="">
+                        <div class="d-flex">
+                            <div class=""> <span class="fa-solid fa-suitcase mx-3"></span> <span class="fw-bold">Cobrancas </span></div>
+                            <div style="margin-left:51%"> <span class="if-collapsed"><i class="fa-solid fa-circle-chevron-left"></i></span>
+                                <span class="if-not-collapsed"><i class="fa-solid fa-circle-chevron-down"></i></span>
+                            </div>
+                        </div>
+                    </a>
+                </li>
+                <!-- Submenu content -->
+                <div id='cobrancas' class="collapse sidebar-submenu">
+                    <li class="mx-2">
+                        <a href="/cobrancas" class="menu-fecha"><span class="fa fa-external-link mx-3"></span>Cobrancas
+                        </a>
+                    </li>
+               
+                </div>
+            </ul>
 
 
 
@@ -89,7 +108,7 @@
 
            
            
-            <ul class="list-unstyled components mb-3">
+            <!-- <ul class="list-unstyled components mb-3">
                 <li class="">
                     <a href="#campanhas" data-toggle="collapse" aria-expanded="false" class="">
                         <div class="d-flex">
@@ -100,7 +119,7 @@
                         </div>
                     </a>
                 </li>
-                <!-- Submenu content -->
+              
                 <div id='campanhas' class="collapse sidebar-submenu">
                     <li class="mx-2">
                         <a href="/campanhas/create" class="menu-fecha"><span class="fa fa-plus mx-3"></span>Nova
@@ -139,7 +158,7 @@
                         </a>
                     </li>
                 </div>
-            </ul>
+            </ul> -->
            
 
          

@@ -15,8 +15,13 @@ return new class extends Migration
     {
         Schema::create('itenssolicitacoes', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('solicitacao_id')->unsigned();
-            $table->foreign('solicitacao_id')->references('id')->on('solicitacoes');
+            $table->unsignedBigInteger('solicitacao_id')->unsigned();
+            $table->foreign('solicitacao_id')->references('id')->on('solicitacoes')->onDelete('cascade'); // Deleção em cascata
+
+
+
+
+
             $table->integer('servico_id')->unsigned();
             $table->foreign('servico_id')->references('id')->on('servicos');
             $table->integer('qtd')->default(1);

@@ -2,7 +2,7 @@
 @section('body')
 <div class="card">
     <div class="card-header titulo-form ">
-        Lista de Solicitações
+        Lista de Cobranças
     </div>
     <div class="card-body ">
 
@@ -70,12 +70,14 @@
                 <thead>
                     <tr>
                         <th class="" style="text-align: center">COD.</th>
-                        <th class="" style="text-align: center">DATA INICIO</th>
+                        <th class="" style="text-align: center">DATA</th>
+                        <th class="" style="text-align: center">SOLICITACAO</th>
                         <th class="" style="text-align: left">CLIENTE</th>
-                        <th class="" style="text-align: left">SERVIÇOS</th>
-                        <th class="" style="text-align: center">TEMPO ESTIMADO</th>
-
-                        <th class="" style="text-align: center">DATA CONCLUSÃO</th>
+                        <th class="" style="text-align: center">NR. PARCELAS</th>
+                        <th class="" style="text-align: center">VALOR</th>
+                        <th class="" style="text-align: center">ENTRADA</th>
+                        <th class="" style="text-align: center">DESCONTO</th>
+                        <th class="" style="text-align: center">SALDO DEVEDOR</th>
                         <th class="" style="text-align: center">STATUS</th>
                         <th class="" colspan="1" style="text-align: center">AÇÕES</th>
                     </tr>
@@ -83,19 +85,21 @@
                 <tbody>
                     @php
                     $valor_pago = 0;
-                 
+                    $itensVendidos = 0;
                     $tempo = 0;
                     $valor = 0;
                     $servicos = [];
                     $formattedTime = 0;
-                    $totalSolicitacoes = App\Models\Solicitacoes::where('status', '!=', 'cancelado')->count();
                     @endphp
 
                     @foreach ($dados as $item)
 
 
-                    @php
-                   
+                    <!-- @php
+                    $vendidos = App\Models\ItensSolicitacoes::where('solicitacao_id', $item->id)->get();
+                    foreach($vendidos as $vendido){
+                    $itensVendidos += $vendido->qtd;
+                    }
 
                     $ItensSolicitacoes = App\Models\ItensSolicitacoes::where('solicitacao_id', $item->id)->get();
                     foreach($ItensSolicitacoes as $itemSolicitacao){
@@ -107,23 +111,46 @@
                     foreach($ItensSolicitacoes as $itemSolicitacao){
                     $valor += ($itemSolicitacao['servico']['valor'] * $itemSolicitacao->qtd );
                     }
+                    @endphp -->
 
 
 
-
-                    @endphp
 
                     <td width="2%" style="text-align: center">
                         <span class="table-subtitulos cor-escura"> {{ $item->id }}</span>
                     </td>
-                    <td width="7%" style="text-align: center">
-                        {{ date('d/m/Y', strtotime($item->data_solicitacao)) }}
+
+
+                    <td width="5%" style="text-align: center">
+                        {{ date('d/m/Y', strtotime($item->data_vencimento)) }}
+                    </td>
+
+                    <td width="5%" style="text-align: center">
+                        <span class="table-subtitulos cor-escura"> {{ $item->solicitacao_id }}</span>
                     </td>
 
                     <td width="20%" style="text-align: left">
-                        <span class="table-subtitulos cor-escura"> {{ $item['cliente']['nome'] }}</span>
+                        <span class="table-subtitulos cor-escura"> {{ $item['solicitacao']['cliente']['nome'] }}</span>
                     </td>
-                    <td width="15%" style="text-align: left">
+                    <td width="10%" style="text-align: center">
+                        <span class="table-subtitulos cor-escura"> {{ $item->parcelas }}</span>
+                    </td>
+
+                    <td width="10%" style="text-align: center">
+                        {{ 'R$ ' . number_format($item->valor_total, 2, ',', '.') }}</span>
+                    </td>
+                    <td width="10%" style="text-align: center">
+                        {{ 'R$ ' . number_format($item->entrada, 2, ',', '.') }}</span>
+                    </td>
+                    <td width="10%" style="text-align: center">
+                        {{ 'R$ ' . number_format($item->desconto, 2, ',', '.') }}</span>
+                    </td>
+                    <td width="10%" style="text-align: center">
+                        {{ 'R$ ' . number_format($item->valor_total - ($item->entrada + $item->desconto), 2, ',', '.') }}</span>
+                    </td>
+
+
+                    <!-- <td width="15%" style="text-align: left">
                         <span class="table-subtitulos cor-escura">
 
                             @php
@@ -131,38 +158,46 @@
                             @endphp
 
                             @foreach($ItensSolicitacoes as $itemSolicitacao)
-
-                            <img src="{{ env('APP_LINK_IMAGES') }}task.png" width="16PX" height="16PX"> {{ $itemSolicitacao['servico']['descricao'] }}
-                            <p>
-                            <p>
-
-                                @endforeach
+                          
+                          <img src="{{ env('APP_LINK_IMAGES') }}task.png" width="16PX" height="16PX"  >          {{ $itemSolicitacao['servico']['descricao'] }}<p><p>
+                               
+                            @endforeach
 
                         </span>
-                    </td>
+                    </td> -->
 
 
-                    @if ( $formattedTime)
+                    <!-- @if ( $formattedTime)
                     <td width="10%" style="text-align: center">
                         <span class="table-subtitulos cor-escura"><img src="{{ env('APP_LINK_IMAGES') }}clockmini.png" width="18PX" height="18PX" title="tempo estimado pra concluir a solicitação">
                             {{ $formattedTime->format('%H:%I')    }}
                         </span>
                     </td>
-                    @endIf
+                    @endIf -->
+                    <!-- <td width="10%" style="text-align: center">
+                        {{ 'R$ ' . number_format($valor, 2, ',', '.') }}</span>
+                    </td>
+                    <td width="10%" style="text-align: center">
+                        {{ 'R$ ' . number_format($item->entrada, 2, ',', '.') }}</span>
+                    </td>
+                    <td width="10%" style="text-align: center">
+                        {{ 'R$ ' . number_format($item->desconto, 2, ',', '.') }}</span>
+                    </td>
+                    <td width="10%" style="text-align: center">
+                        {{ 'R$ ' . number_format($item->valor - ($item->entrada + $item->desconto), 2, ',', '.') }}</span>
+                    </td> -->
 
-                  
 
-
-                    @if ( !$formattedTime)
+                    <!-- @if ( !$formattedTime)
                     <td width="10%" style="text-align: center">
                         <span class="table-subtitulos cor-escura"><img src="{{ env('APP_LINK_IMAGES') }}clockmini.png" width="18PX" height="18PX" title="tempo estimado pra concluir a solicitação">
                             00:00
                         </span>
                     </td>
-                    @endIf
+                    @endIf -->
 
 
-
+                    <!-- 
                     @if ($item->data_final != null)
                     <td width="10%" style="text-align: center">
                         {{ date('d/m/Y', strtotime($item->data_final)) }}
@@ -172,26 +207,31 @@
                     <td width="10%" style="text-align: center">
                         -
                     </td>
-                    @endIf
+                    @endIf -->
 
 
 
 
-                    @if ($item->status == 'EM ANDAMENTO')
-                    <td width="5%" style="text-align: center">
-                        <span class=" badge bg-warning  cor-escura"> {{ $item->status }}</span>
-                    </td>
-                    @endIf
-                    @if ($item->status == 'AGUARDANDO APROVAÇÃO')
-                    <td width="5%" style="text-align: center">
-                        <span class=" badge bg-primary  cor-escura"> {{ $item->status }}</span>
-                    </td>
-                    @endIf
 
-                    @if ($item->status == 'PAGA')
+
+                    @if ($item->status == 'PAGO')
                     <td width="5%" style="text-align: center">
 
                         <span class="badge bg-success  cor-escura"> {{ $item->status }}</span>
+                    </td>
+                    @endIf
+
+                    @if ($item->status == 'VENCIDO')
+                    <td width="5%" style="text-align: center">
+
+                        <span class="badge bg-danger  cor-escura"> {{ $item->status }}</span>
+                    </td>
+                    @endIf
+
+                    @if ($item->status == 'PENDENTE')
+                    <td width="5%" style="text-align: center">
+
+                        <span class="badge bg-warning  cor-escura"> {{ $item->status }}</span>
                     </td>
                     @endIf
 
@@ -202,31 +242,17 @@
                     </td>
                     @endIf
 
-                    @if ($item->status == 'AGUARDANDO PAGAMENTO')
-                    <td width="5%" style="text-align: center">
-
-                        <span class="badge bg-info  cor-escura"> {{ $item->status }}</span>
-                    </td>
-                    @endIf
-                    @if ($item->status == 'CONCLUIDA')
-                    <td width="5%" style="text-align: center">
-
-                        <span class="badge bg-success  cor-escura"> {{ $item->status }}</span>
-                    </td>
-                    @endIf
 
 
-                    {{-- <td>
-                                {{ date('d-m-Y', strtotime($item->data)) }}
-                    </td> --}}
+
 
                     <td width="3%">
                         <div class=" d-flex align-items-center">
                             @if ($item->status != 'CANCELADA')
-                            <a class="btn-imagens" href="/carrinho/{{ $item->id }}">
-                                <img src="{{ env('APP_LINK_IMAGES') }}servicos.png" width="18PX" height="18PX" title="mostra os servicos"></a>
+                            <a class="btn-imagens" href="/pagamentos/{{ $item->id }}">
+                                <img src="{{ env('APP_LINK_IMAGES') }}lupa.png" width="18PX" height="18PX" title="ver pagamentos"></a>
                             @endIf
-                            @if ($item->status != 'CANCELADA')
+                            <!-- @if ($item->status != 'CANCELADA')
                             <a class="btn-imagens" onclick="setaDadosModalCancela('window.location.href=\'/solicitacoes/cancela/{{ $item->id }}\'')" data-toggle="modal" data-target="#cancela-modal">
                                 <img src="{{ env('APP_LINK_IMAGES') }}cancel.png" width="18PX" height="18PX" title="cancela a solicitacao">
                             </a>
@@ -236,25 +262,17 @@
                             <a class="btn-imagens" onclick="setaDadosModalFinaliza('window.location.href=\'/solicitacoes/finalizar/{{ $item->id }}\'')" data-toggle="modal" data-target="#finaliza-modal">
                                 <img src="{{ env('APP_LINK_IMAGES') }}finalizado.png" width="18PX" height="18PX" title="finaliza a solicitacao">
                             </a>
-                            @endIf
+                            @endIf -->
 
-                            @if ($item->status != 'CANCELADA')
+                            <!-- @if ($item->status != 'CANCELADA')
                             <a class="btn-imagens" href="/solicitacoes/edit/{{ $item->id }}">
                                 <img src="{{ env('APP_LINK_IMAGES') }}edit.svg" width="18PX" height="18PX" title="edita a solicitacao"></a>
-                            @endIf
-                            {{-- @if ($item->status != 'CANCELADA' && $item->status != 'PAGA')
-                                        <a class="btn-imagens" href="/solicitacoes/edit/{{ $item->id }}">
-                            <img src="{{ env('APP_LINK_IMAGES') }}edit.svg" width="18PX" height="18PX"></a>
-                            @endIf
-                            }}
+                            @endIf -->
 
 
 
-                            {{-- <a class="btn-imagens"
-                                            onclick="setaDadosModal('window.location.href=\'/solicitacoes/delete/{{ $item->id }}\'')"
-                            data-toggle="modal" data-target="#delete-modal">
-                            <img src="{{ env('APP_LINK_IMAGES') }}trash.svg" width="18PX" height="18PX">
-                            </a> --}}
+
+
                         </div>
                     </td>
 
@@ -269,7 +287,7 @@
                 </tbody>
 
             </table>
-            <span><b>Total de solicitações: {{ $totalSolicitacoes }}</b></span>
+            <span><b>Total de Itens solicitados: {{ $itensVendidos }}</b></span>
             <div style="text-align: right">
                 <button class="btn btn-my-secondary" onclick="window.location.href='/sistema'">
                     Voltar

@@ -3,11 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Clientes;
+use App\Models\Cobranca;
 use App\Models\Cobrancas;
 use App\Models\Estoque;
 use App\Models\Financeiro\FormasPagamento;
 use App\Models\Financeiro\Movimentos;
 use App\Models\ItensSolicitacoes;
+use App\Models\Pagamento;
 use App\Models\Parcelas;
 use App\Models\Servicos;
 use App\Models\Solicitacoes;
@@ -21,15 +23,9 @@ class SolicitacoesController extends Controller
     public function index()
     {
         $clientes = Clientes::all();
-
-        $total = Solicitacoes::where('status', '!=', 'CANCELADA')->sum('valor');
-        $desconto = 0; //Solicitacoes::where('status', '!=', 'CANCELADA')->sum('desconto');
-        $entradas = 0; //Solicitacoes::where('status', '!=', 'CANCELADA')->sum('entrada');
-        $saldo_devedor = 0; //Solicitacoes::where('status', '!=', 'CANCELADA')->sum(DB::raw('valor - desconto-entrada'));
-        $pago = 0; //Parcelas::where('status', 'PAGA')->sum('valor_pago');
-
-        $dados = Solicitacoes::where('status', '!=', 'CANCELADA')->orderby('data_solicitacao', 'desc')->orderBy('status', 'asc')->paginate(env('APP_PAGINATE'));
-        return view('solicitacoes.index', ['clientes' => $clientes, 'dados' => $dados, 'total' => $total, 'pago' => $pago, 'descontos' => $desconto, 'devedor' => $saldo_devedor, 'entradas' => $entradas]);
+       
+        $dados = Solicitacoes::where('status', '!=', 'teste')->orderby('data_solicitacao', 'desc')->orderBy('id', 'desc')->orderBy('status', 'desc')->paginate(env('APP_PAGINATE'));
+        return view('solicitacoes.index', ['clientes' => $clientes, 'dados' => $dados]);
     }
 
     public function create()
@@ -48,9 +44,8 @@ class SolicitacoesController extends Controller
         return view('solicitacoes.edit', ['dados' => $solicitacoes, 'formaspagamento' => $formaspagamento]);
     }
 
-    public function update(Solicitacoes $solicitacoes, Request $request)
+    public function update(Solicitacoes $solicitacoes, Request $request, Cobranca $cobranca)
     {
-//dd($request);
         $datainicio =  converte_data($request->data_solicitacao);
 
         $solicitacao = Solicitacoes::find($request->id);
@@ -64,6 +59,30 @@ class SolicitacoesController extends Controller
             "status"       => $request['status'],
         ]);
         Solicitacoes::find($request->id)->update($dataSolicitacao->all());
+
+        //gera cobranca
+        $cobranca = new Cobranca();
+        $cobranca->solicitacao_id = $request->id;
+        $cobranca->valor_total = $request->valor;
+        $cobranca->entrada = $request->entrada;
+        $cobranca->desconto = $request->desconto;
+        $cobranca->data_vencimento = $datainicio;
+        $cobranca->parcelas = $request->parcelas; // Número de parcelas
+        $cobranca->save();
+
+        // Gerar as parcelas
+        $valor = floatval($request->valor);
+        $entrada = floatval($request->entrada);
+        $desconto = floatval($request->desconto);
+        $valorPorParcela = ($valor - ($entrada + $desconto)) / $request->parcelas;
+        for ($i = 1; $i <= $request->parcelas; $i++) {
+            Pagamento::create([
+                'cobranca_id' => $cobranca->id,
+                'valor' => $valorPorParcela,
+                'data_vencimento' => now()->addMonths($i), // Ajustar a data de vencimento de cada parcela
+                'status' => 'PENDENTE'
+            ]);
+        }
 
         $dados = Solicitacoes::all();
         return redirect()->route('solicitacoes.index')->with(compact('dados'));
@@ -81,7 +100,6 @@ class SolicitacoesController extends Controller
         $solicitacoes->data_solicitacao = $dt_inicio;
         $solicitacoes->save();
         $dados = Solicitacoes::paginate(env('APP_PAGINATE'));
-
         return redirect()->route('carrinho.index', ['id' => $solicitacoes['id']])->with(compact('dados'));
     }
 
@@ -101,7 +119,6 @@ class SolicitacoesController extends Controller
 
     public function pagamento(Solicitacoes $solicitacoes, Request $request)
     {
-
         if (!$request->id) throw new \Exception("ID não informado!", 1);
         $solicitacoes = Solicitacoes::find($request->id);
         $valor = $request->valor;
@@ -110,7 +127,6 @@ class SolicitacoesController extends Controller
 
     public function cancela(Solicitacoes $solicitacoes, Request $request)
     {
-
         /* Exclui itens do carrinho */
         if (!$request->id) throw new \Exception("Erro ao cancelar", 1);
         ItensSolicitacoes::where('solicitacao_id', '=', $request->id)->delete();
@@ -122,6 +138,13 @@ class SolicitacoesController extends Controller
         ]);
         Solicitacoes::find($request->id)->update($dataSolicitacao->all());
 
+
+        //atualiza status da cobranca
+        $dataSolicitacao = collect([]);
+        $dataSolicitacao = $dataSolicitacao->merge([
+            "status"       => 'CANCELADA',
+        ]);
+        Cobranca::where('solicitacao_id', $request->id)->update($dataSolicitacao->all());
 
         $dados = Solicitacoes::paginate(env('APP_PAGINATE'));
         return redirect()->route('solicitacoes.index')->with(compact('dados'));
@@ -139,7 +162,6 @@ class SolicitacoesController extends Controller
         ]);
         Solicitacoes::find($request->id)->update($dataSolicitacao->all());
 
-
         $dados = Solicitacoes::paginate(env('APP_PAGINATE'));
         return redirect()->route('solicitacoes.index')->with(compact('dados'));
     }
@@ -148,44 +170,6 @@ class SolicitacoesController extends Controller
     public function pesquisa(Request $request)
     {
         $clientes = Clientes::all();
-
-        #Total
-        $query = Solicitacoes::query();
-        $query = ($request->codigo != null) ? $query->where('id', $request->codigo) : $query;
-        $query = ($request->mes != null) ? $query->whereMonth('data_solicitacao', $request->mes) : $query;
-        $query = ($request->status != null) ? $query->where('status', $request->status) : $query;
-        $query = ($request->pesquisa != null) ? $query->where('cliente_id', $request->pesquisa) : $query;
-        $query->where('status', '!=', 'CANCELADA');
-        $total = $query->sum('valor');
-
-        #Desconto
-        $query = Solicitacoes::query();
-        $query = ($request->codigo != null) ? $query->where('id', $request->codigo) : $query;
-        $query = ($request->mes != null) ? $query->whereMonth('data_solicitacao', $request->mes) : $query;
-        $query = ($request->status != null) ? $query->where('status', $request->status) : $query;
-        $query = ($request->pesquisa != null) ? $query->where('cliente_id', $request->pesquisa) : $query;
-        $query->where('status', '!=', 'CANCELADA');
-        $desconto = 0; //$query->sum('desconto');
-
-        #Entrada
-        $query = Solicitacoes::query();
-        $query = ($request->codigo != null) ? $query->where('id', $request->codigo) : $query;
-        $query = ($request->mes != null) ? $query->whereMonth('data_solicitacao', $request->mes) : $query;
-        $query = ($request->status != null) ? $query->where('status', $request->status) : $query;
-        $query = ($request->pesquisa != null) ? $query->where('cliente_id', $request->pesquisa) : $query;
-        $query->where('status', '!=', 'CANCELADA');
-        $entradas = 0; //$query->sum('entrada');
-
-        #saldo Devedor
-        $query = Solicitacoes::query();
-        $query = ($request->codigo != null) ? $query->where('id', $request->codigo) : $query;
-        $query = ($request->mes != null) ? $query->whereMonth('data_solicitacao', $request->mes) : $query;
-        $query = ($request->status != null) ? $query->where('status', $request->status) : $query;
-        $query = ($request->pesquisa != null) ? $query->where('cliente_id', $request->pesquisa) : $query;
-        $query->where('status', '!=', 'CANCELADA');
-        $saldo_devedor = 0; //$query->sum(DB::raw('valor - desconto - entrada'));
-
-
         $query = Solicitacoes::query();
         $query = ($request->codigo != null) ? $query->where('id', $request->codigo) : $query;
         $query = ($request->mes != null) ? $query->whereMonth('data_solicitacao', $request->mes) : $query;
@@ -195,9 +179,6 @@ class SolicitacoesController extends Controller
         $query = $query->orderBy('data_solicitacao', 'desc');
         $dados = $query->paginate(env('APP_PAGINATE'));
 
-        $pago = 0; //
-
-
-        return view('solicitacoes.index', ['clientes' => $clientes, 'dados' => $dados, 'total' => $total, 'pago' => $pago, 'descontos' => $desconto, 'devedor' => $saldo_devedor, 'entradas' => $entradas]);
+        return view('solicitacoes.index', ['clientes' => $clientes, 'dados' => $dados]);
     }
 }

@@ -19,6 +19,9 @@ class ContasSeeder extends Seeder
             [
                 'conta' => 'NU BANK',
             ],
+            [
+                'conta' => 'BRADESCO',
+            ],
 
         ]);
     }

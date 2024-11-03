@@ -6,6 +6,7 @@ use App\Http\Controllers\CampanhaController;
 use App\Http\Controllers\CarnesController;
 use App\Http\Controllers\CategoriasController;
 use App\Http\Controllers\ClientesController;
+use App\Http\Controllers\CobrancaController;
 use App\Http\Controllers\CobrancasComprasController;
 use App\Http\Controllers\CobrancasController;
 use App\Http\Controllers\ComprasController;
@@ -24,6 +25,7 @@ use App\Http\Controllers\MarcasController;
 use App\Http\Controllers\ParcelasController;
 use App\Http\Controllers\ProdutosController;
 use App\Http\Controllers\ItensSolicitacoesController;
+use App\Http\Controllers\PagamentoController;
 use App\Http\Controllers\RelatoriosController;
 use App\Http\Controllers\ServicosController;
 use App\Http\Controllers\SolicitacoesController;
@@ -52,9 +54,9 @@ Route::get('/', function () {
 
 Route::middleware('auth')->group(function () {
     Route::get('/sistema', [HomeController::class, 'index'])->name('home');
-    
-    
-    
+
+
+
     Route::group(['prefix' => 'clientes'], function () {
         Route::get('/', [ClientesController::class, 'index'])->name('clientes.index');
         Route::get('/create', [ClientesController::class, 'create'])->name('clientes.create');
@@ -66,24 +68,8 @@ Route::middleware('auth')->group(function () {
         Route::post('/pesquisa', [ClientesController::class, 'pesquisa'])->name('clientes.pesquisa');
         Route::get('/historico/{id}', [ClientesController::class, 'historico'])->name('clientes.historico');
 
-        Route::get('/conta/{id}', [ClientesController::class, 'conta'])->name('clientes.conta');
-        Route::post('/conta/pesquisa', [ClientesController::class, 'pesquisaContas'])->name('clientes.conta.pesquisa');
-        //   Route::get('/conta/pagamento/{id}/{valor}', [ClientesController::class, 'pagamentoConta'])->name('clientes.conta.pagamento');
-        Route::get('/conta/cancela/{id}/{cobranca_id}', [ClientesController::class, 'cancelaConta'])->name('clientes.conta.cancela');
-        Route::get('/conta/detalhes/{id}/{cobranca_id}', [ClientesController::class, 'detalhesConta'])->name('clientes.conta.detalhes');
-        Route::get('/conta/compras/{id}/{cobranca_id}', [ClientesController::class, 'comprasConta'])->name('clientes.conta.compras');
-        Route::get('/conta/parcela/edit/{id}/{cobranca_id}', [ClientesController::class, 'parcelasEditConta'])->name('clientes.conta.editparcelas');
-        Route::post('/conta/parcela/update', [ClientesController::class, 'parcelaUpdateConta'])->name('clientes.parcela.update');
-        Route::get('/conta/parcela/create/{id}', [ClientesController::class, 'parcelasCreateConta'])->name('clientes.conta.createparcelas');
-        Route::post('/conta/parcela/create', [ClientesController::class, 'parcelaCreateConta'])->name('clientes.parcela.create');
-
-        Route::get('/itenscompras/{cliente_id}', [ClientesController::class, 'itenscompras'])->name('clientes.itenscompras');
     });
 
-    Route::group(['prefix' => 'bonificacao'], function () {
-        Route::get('/', [BonificacaoController::class, 'index'])->name('bonificacao.index');
-        Route::get('/edit/{id}', [BonificacaoController::class, 'edit'])->name('bonificacao.edit');
-    });
 
     Route::group(['prefix' => 'fornecedores'], function () {
         Route::get('/', [FornecedoresController::class, 'index'])->name('fornecedores.index');
@@ -116,17 +102,7 @@ Route::middleware('auth')->group(function () {
         Route::post('/pesquisa', [CategoriasController::class, 'pesquisa'])->name('categorias.pesquisa');
     });
 
-    Route::group(['prefix' => 'produtos'], function () {
-        Route::get('/', [ProdutosController::class, 'index'])->name('produtos.index');
-        Route::get('/create', [ProdutosController::class, 'create'])->name('produtos.create');
-        Route::get('/edit/{id}', [ProdutosController::class, 'edit'])->name('produtos.edit');
-        Route::get('/delete/{id}', [ProdutosController::class, 'destroy'])->name('produtos.destroy');
-        Route::post('/update', [ProdutosController::class, 'update'])->name('produtos.update');
-        Route::post('/store', [ProdutosController::class, 'store'])->name('produtos.store');
-        Route::get('/pesquisa', [ProdutosController::class, 'pesquisa'])->name('produtos.pesquisa');
-        Route::get('/pesquisaPorId', [ProdutosController::class, 'pesquisaPorId'])->name('produtos.pesquisaPorId');
-        Route::get('/rastrear/{id}', [ProdutosController::class, 'rastrear'])->name('produtos.rastrear');
-    });
+
 
     Route::group(['prefix' => 'servicos'], function () {
         Route::get('/', [ServicosController::class, 'index'])->name('servicos.index');
@@ -138,23 +114,6 @@ Route::middleware('auth')->group(function () {
         Route::get('/pesquisa', [ServicosController::class, 'pesquisa'])->name('servicos.pesquisa');
         Route::get('/pesquisaPorId', [ServicosController::class, 'pesquisaPorId'])->name('servicos.pesquisaPorId');
         Route::get('/rastrear/{id}', [ServicosController::class, 'rastrear'])->name('servicos.rastrear');
-    });
-
-
-    
-
-    Route::group(['prefix' => 'fotos'], function () {
-        Route::get('/', [FotosController::class, 'index'])->name('fotos.index');
-        Route::get('/create', [FotosController::class, 'create'])->name('fotos.create');
-        Route::get('/edit/{id}', [FotosController::class, 'edit'])->name('fotos.edit');
-        Route::get('/delete/{id}', [FotosController::class, 'destroy'])->name('fotos.destroy');
-        Route::post('/update', [FotosController::class, 'update'])->name('fotos.update');
-        Route::post('/store', [FotosController::class, 'store'])->name('fotos.store');
-        Route::post('/pesquisa', [FotosController::class, 'pesquisa'])->name('fotos.pesquisa');
-        Route::get('/', [FotosController::class, 'index'])->name('fotos.index');
-        Route::get('/fotos/{id}', [FotosController::class, 'fotos'])->name('fotos.fotos');
-        Route::get('/addfoto/{id}', [FotosController::class, 'addfoto'])->name('fotos.addfoto');
-        Route::post('/fotosstore', [FotosController::class, 'fotosstore'])->name('fotos.fotosstore');
     });
 
 
@@ -172,12 +131,26 @@ Route::middleware('auth')->group(function () {
         Route::get('/finalizar/{id}', [SolicitacoesController::class, 'finalizar'])->name('solicitacoes.finaliza');
     });
 
+    Route::group(['prefix' => 'cobrancas'], function () {
+        Route::get('/', [CobrancaController::class, 'index'])->name('cobrancas.index');
+        Route::get('/create', [CobrancaController::class, 'create'])->name('cobrancas.create');
+        Route::get('/edit/{id}', [CobrancaController::class, 'edit'])->name('cobrancas.edit');
+        Route::get('/delete/{id}', [CobrancaController::class, 'destroy'])->name('cobrancas.destroy');
+        Route::post('/update', [CobrancaController::class, 'update'])->name('cobrancas.update');
+        Route::post('/alterar', [CobrancaController::class, 'alterar'])->name('cobrancas.alterar');
+        Route::post('/store', [CobrancaController::class, 'store'])->name('cobrancas.store');
+        Route::post('/pesquisa', [CobrancaController::class, 'pesquisa'])->name('cobrancas.pesquisa');
+        Route::get('/pagamento/{id}/{valor}', [CobrancaController::class, 'pagamento'])->name('cobrancas.pagamento');
+        Route::get('/cancela/{id}', [CobrancaController::class, 'cancela'])->name('cobrancas.cancela');
+        Route::get('/finalizar/{id}', [CobrancaController::class, 'finalizar'])->name('cobrancas.finaliza');
+    });
 
+    Route::group(['prefix' => 'pagamentos'], function () {
+        Route::get('/{cobranca_id}', [PagamentoController::class, 'index'])->name('pagamentos.index');
+        Route::get('/cancelar/{cobranca_id}/{id}', [PagamentoController::class, 'cancelar'])->name('pagamentos.cancelar');
+        Route::get('/baixar/{cobranca_id}/{id}', [PagamentoController::class, 'baixar'])->name('pagamentos.baixar');
+    });
 
-  
-
-
-   
 
     Route::group(['prefix' => 'carrinho'], function () {
         Route::get('/{id}', [ItensSolicitacoesController::class, 'index'])->name('carrinho.index');
@@ -189,10 +162,6 @@ Route::middleware('auth')->group(function () {
         Route::post('/pesquisa', [ItensSolicitacoesController::class, 'pesquisa'])->name('carrinho.pesquisa');
         Route::get('/limpa/{id}/', [ItensSolicitacoesController::class, 'limpa'])->name('carrinho.limpa');
     });
-
-
-
-
 
 
     /* financeiro */

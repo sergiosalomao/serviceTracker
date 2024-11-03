@@ -5,7 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-class CentrosSeeder extends Seeder
+class CentroSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -17,8 +17,11 @@ class CentrosSeeder extends Seeder
         DB::table('centros')->insert([
 
             [
-                'centro' => 'ESCRITORIO',
+                'centro' => 'MATRIZ',
             ],
+            [
+                'centro' => 'FILIAL FORTALEZA',
+            ], 
 
         ]);
     }

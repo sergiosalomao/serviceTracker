@@ -17,6 +17,10 @@
 
             @include('layouts.modal-finaliza')
 
+            @include('layouts.modal-cancelapagamento')
+
+            @include('layouts.modal-baixapagamento')
+
 
             <h2 class="mb-4"></h2>
             <div id="loading" class="spinner-border text-primary float-center" role="status">

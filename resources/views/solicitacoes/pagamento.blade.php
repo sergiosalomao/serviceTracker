@@ -22,16 +22,42 @@
                 @php
                 $valor = number_format((float) request('valor'), 2, '.', '');
                 @endphp
+
+                @php
+                $desconto = number_format((float) request('desconto'), 2, '.', '');
+                @endphp
+
+
+                
                 <div class="col-lg-12">
                     <label class="labels-form">Entrada</label>
-                    <span class="h4 fa fa-question-circle-o mx-2" style="color:cadetblue;cursor: pointer;" title="O valor total nao pode ser alterado."></span>
-                    <input id="entrada" name="entrada" type="text" class=" form-control form-control-sm mb-4"  value="{{ number_format((float) 0, 2, '.', ''); }}">
+                    <span class="h4 fa fa-question-circle-o mx-2" style="color:cadetblue;cursor: pointer;" title="Caso tenha entrada a primeira parcela fica para o proximo vencimendo de acordo com o prazo selecionado."></span>
+                    <input id="entrada" name="entrada" type="text" class=" form-control form-control-sm mb-4" placeholder="" value="0.00">
                 </div>
+
                 <div class="col-lg-12">
-                    <label class="labels-form">Desconto</label>
-                    <span class="h4 fa fa-question-circle-o mx-2" style="color:cadetblue;cursor: pointer;" title="O valor total nao pode ser alterado."></span>
-                    <input id="desconto" name="desconto" type="text" class=" form-control form-control-sm mb-4"  value="{{ number_format((float) 0, 2, '.', ''); }}">
+                    <label class="labels-form">Desconto (R$)</label>
+                    <span class="h4 fa fa-question-circle-o mx-2" style="color:cadetblue;cursor: pointer;" title="desconto (%)"></span>
+                    <input id="desconto" name="desconto" type="text" class=" form-control form-control-sm mb-4" value="{{$desconto}}">
                 </div>
+
+                <div class="col-lg-12 mb-2"><label class="labels-form">Parcelas</label>
+                    <select id="2" name="parcelas" type="text" class="form-select form-control-sm">
+                        <option value="1">1x</option>
+                        <option value="2">2x</option>
+                        <option value="3">3x</option>
+                        <option value="4">4x</option>
+                        <option value="5">5x</option>
+                        <option value="6">6x</option>
+                        <option value="7">7x</option>
+                        <option value="8">8x</option>
+                        <option value="9">9x</option>
+                        <option value="10">10x</option>
+                        <option value="11">11x</option>
+                        <option value="12">12x</option>
+                    </select>
+                </div>
+
              
                 <div class="col-lg-12">
                     <label class="labels-form">Valor Total</label>
@@ -67,20 +93,20 @@
     </script>
 
 
-    <script>
+    <!-- <script>
         $('#entrada').on('change', function() {
             var entrada = document.getElementById("entrada").value;
-            let valor = document.getElementById("valor").value;
+            let principal = document.getElementById("principal").value;
             let desconto = document.getElementById("desconto").value;
-            $("#valor").val((valor - (entrada - desconto)));
+            $("#valor").val(principal - (entrada + desconto));
         });
     </script>
     <script>
         $('#desconto').on('change', function() {
             var entrada = document.getElementById("entrada").value;
-            let valor = document.getElementById("valor").value;
+            let principal = document.getElementById("principal").value;
             let desconto = document.getElementById("desconto").value;
-            $("#valor").val((valor - (entrada - desconto)));
+            $("#valor").val((principal - (entrada + desconto)));
         });
-    </script>
+    </script> -->
     @endsection

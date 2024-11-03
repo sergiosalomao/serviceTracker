@@ -22,10 +22,12 @@ class DatabaseSeeder extends Seeder
             CategoriasSeeder::class,
             ServicosSeeder::class,
             ClientesSeeder::class,
-            //   FornecedoresSeeder::class,
-            //   FluxosSeeder::class,
-            //   MarcasSeeder::class,
-            //   ModulosSeeder::class,
+            FornecedoresSeeder::class,
+            FluxosSeeder::class,
+            MarcasSeeder::class,
+            CentroSeeder::class,
+            ContasSeeder::class,
+            MovimentosSeeder::class,
         ]);
 
 
@@ -43,6 +45,16 @@ class DatabaseSeeder extends Seeder
             'email' => 'admin@admin.com',
             'status' => 'ATIVO',
             'password' => bcrypt('210981'),
+            'api_token' => Str::random(60),
+        ]);
+
+        User::factory()->create([
+            'name' => 'Fabiano',
+            'tipo' => 'SUPER USUARIO',
+            'cpf' => '11111111111',
+            'email' => 'admin@admin2.com',
+            'status' => 'ATIVO',
+            'password' => bcrypt('112233'),
             'api_token' => Str::random(60),
         ]);
     }

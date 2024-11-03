@@ -18,9 +18,6 @@ return new class extends Migration
 
             $table->string('tipo')->notnull();
             $table->string('data')->nullable();
-
-        
-
             
             $table->integer('centro_id')->notnull()->unsigned();
             $table->foreign('centro_id')->references('id')->on('centros');
@@ -31,7 +28,6 @@ return new class extends Migration
             $table->integer('fluxo_id')->notnull()->unsigned();
             $table->foreign('fluxo_id')->references('id')->on('fluxos');
 
-        
             
             $table->string('descricao')->nullable();
             $table->decimal('valor', 10, 2)->notnull();
