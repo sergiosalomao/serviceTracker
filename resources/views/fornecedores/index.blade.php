@@ -76,7 +76,7 @@
 
 
                                                 <a class="btn-imagens" href="/fornecedores/edit/{{ $item->id }}">
-                                                    <img src="{{ env('APP_LINK_IMAGES') }}edit.svg" width="18px"
+                                                    <img src="{{ env('APP_LINK_IMAGES') }}edit.png" width="18px"
                                                         height="18px"></a>
 
 

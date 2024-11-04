@@ -5,11 +5,11 @@
 
 
 :root {
-  --font-smallx: 8px;
-  --font-small: 10px;
-  --font-media: 12px;
-  --font-large: 14px;
-  --font-largex: 17px;
+  --font-smallx: 9px;
+  --font-small: 11px;
+  --font-media: 13px;
+  --font-large: 15px;
+  --font-largex: 18px;
 
   --cor-principal: #002648;
   --cor-principal-hover: #47C4F2;
@@ -281,6 +281,14 @@ option {
   color: var(--cor-principal) !important;
   font-weight: bold;
   background-color: white !important;
+}
+
+
+.table-subtitulos {
+  margin: 0;
+  /* Remove a margem dos elementos */
+  display: block;
+  /* Faz com que o <span> se comporte como um bloco */
 }
 
 table.table tr th {
@@ -693,9 +701,18 @@ button {
 
 
 .btn-imagens {
-  padding-left: 10px;
+ 
   cursor:pointer;
+  background-color: #FFFFFF; /* Branco */
+  color: #333333;
+  border: 1px solid #ccc; /* Para destacar o botão */
+  border-radius: 4px;
+  font-size: 0.875rem;
+  padding: 8px 8px;
+  margin-left: 5px;
+  transition: background-color 1s;
 }
+
 
 #content {
   width: 100%;

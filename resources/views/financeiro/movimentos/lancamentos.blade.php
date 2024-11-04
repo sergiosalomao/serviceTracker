@@ -101,7 +101,7 @@
                                     <td width="5%"  style="text-align: center; ">
                                         <div class=" d-flex align-items-center">
                                             <a class="btn-imagens" href="/financeiro/movimentos/edit/{{ $item->id }}">
-                                                <img src="{{ env('APP_LINK_IMAGES') }}edit.svg" width="18px"
+                                                <img src="{{ env('APP_LINK_IMAGES') }}edit.png" width="18px"
                                                     height="18px"></a>
 
                                             <a class="btn-imagens"

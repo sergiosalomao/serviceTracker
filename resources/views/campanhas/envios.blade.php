@@ -95,7 +95,7 @@
                                         <img src="{{ env('APP_LINK_IMAGES') }}hand.svg" width="18px" height="18px"></a> --}}
 
                                   {{--   <a class="btn-imagens" href="/clientes/edit/{{ $item->id }}">
-                                        <img src="{{ env('APP_LINK_IMAGES') }}edit.svg" width="18px" height="18px"></a>
+                                        <img src="{{ env('APP_LINK_IMAGES') }}edit.png" width="18px" height="18px"></a>
 
 
                                     <a class="btn-imagens"

@@ -76,39 +76,39 @@
             </div>
         </ul>
 
-        
+
 
         <ul class="list-unstyled components mb-3">
-                <li class="">
-                    <a href="#cobrancas" data-toggle="collapse" aria-expanded="false" class="">
-                        <div class="d-flex">
-                            <div class=""> <span class="fa-solid fa-suitcase mx-3"></span> <span class="fw-bold">Cobrancas </span></div>
-                            <div style="margin-left:51%"> <span class="if-collapsed"><i class="fa-solid fa-circle-chevron-left"></i></span>
-                                <span class="if-not-collapsed"><i class="fa-solid fa-circle-chevron-down"></i></span>
-                            </div>
+            <li class="">
+                <a href="#cobrancas" data-toggle="collapse" aria-expanded="false" class="">
+                    <div class="d-flex">
+                        <div class=""> <span class="fa-solid fa-suitcase mx-3"></span> <span class="fw-bold">Cobrancas </span></div>
+                        <div style="margin-left:51%"> <span class="if-collapsed"><i class="fa-solid fa-circle-chevron-left"></i></span>
+                            <span class="if-not-collapsed"><i class="fa-solid fa-circle-chevron-down"></i></span>
                         </div>
+                    </div>
+                </a>
+            </li>
+            <!-- Submenu content -->
+            <div id='cobrancas' class="collapse sidebar-submenu">
+                <li class="mx-2">
+                    <a href="/cobrancas" class="menu-fecha"><span class="fa fa-external-link mx-3"></span>Cobrancas
                     </a>
                 </li>
-                <!-- Submenu content -->
-                <div id='cobrancas' class="collapse sidebar-submenu">
-                    <li class="mx-2">
-                        <a href="/cobrancas" class="menu-fecha"><span class="fa fa-external-link mx-3"></span>Cobrancas
-                        </a>
-                    </li>
-               
-                </div>
-            </ul>
 
-
-
-       
+            </div>
+        </ul>
 
 
 
 
-           
-           
-            <!-- <ul class="list-unstyled components mb-3">
+
+
+
+
+
+
+        <!-- <ul class="list-unstyled components mb-3">
                 <li class="">
                     <a href="#campanhas" data-toggle="collapse" aria-expanded="false" class="">
                         <div class="d-flex">
@@ -159,63 +159,63 @@
                     </li>
                 </div>
             </ul> -->
-           
 
-         
-            <ul class="list-unstyled components mb-3">
-                <li class="">
-                    <a href="#financeiro" data-toggle="collapse" aria-expanded="false" class="">
-                        <div class="d-flex">
-                            <div class=""> <span class="fa-solid fa-suitcase mx-3"></span> <span class="fw-bold">Financeiro </span></div>
-                            <div style="margin-left:51%"> <span class="if-collapsed"><i class="fa-solid fa-circle-chevron-left"></i></span>
-                                <span class="if-not-collapsed"><i class="fa-solid fa-circle-chevron-down"></i></span>
-                            </div>
+
+
+        <ul class="list-unstyled components mb-3">
+            <li class="">
+                <a href="#financeiro" data-toggle="collapse" aria-expanded="false" class="">
+                    <div class="d-flex">
+                        <div class=""> <span class="fa-solid fa-suitcase mx-3"></span> <span class="fw-bold">Financeiro </span></div>
+                        <div style="margin-left:51%"> <span class="if-collapsed"><i class="fa-solid fa-circle-chevron-left"></i></span>
+                            <span class="if-not-collapsed"><i class="fa-solid fa-circle-chevron-down"></i></span>
                         </div>
+                    </div>
+                </a>
+            </li>
+            <!-- Submenu content -->
+            <div id='financeiro' class="collapse sidebar-submenu">
+                <li class="mx-2">
+                    <a href="/financeiro/movimentos" class="menu-fecha"><span class="fa fa-external-link mx-3"></span>Lançamentos
                     </a>
                 </li>
-                <!-- Submenu content -->
-                <div id='financeiro' class="collapse sidebar-submenu">
-                    <li class="mx-2">
-                        <a href="/financeiro/movimentos" class="menu-fecha"><span class="fa fa-external-link mx-3"></span>Lançamentos
-                        </a>
-                    </li>
-                    <li class="mx-2">
-                        <a href="/financeiro/formas-pagamento" class="menu-fecha"><i class="fa fa-credit-card mx-3"></i>Formas de Pagamento</a>
-                    </li>
-                    <li class="mx-2">
-                        <a href="/financeiro/fluxos" class="menu-fecha"><i class="fa fa-code-fork mx-3"></i>Fluxos</a>
-                    </li>
-                    <li class="mx-2">
-                        <a href="/financeiro/contas" class="menu-fecha"><i class="fa fa-home mx-3"></i>Contas</a>
-                    </li>
-                    <li class="mx-2">
-                        <a href="/financeiro/centros" class="menu-fecha"><i class="fa fa-building mx-3"></i>Centros
-                            de Custo</a>
-                    </li>
-                </div>
-            </ul>
-          
-
-            <ul class="list-unstyled components mb-3">
-                <li class="">
-                    <a href="#cadastro" data-toggle="collapse" aria-expanded="false" class="">
-                        <div class="d-flex">
-                            <div class=""> <span class="fa-solid fa-suitcase mx-3"></span> <span class="fw-bold">Cadastros</span></div>
-                            <div style="margin-left:51%"> <span class="if-collapsed"><i class="fa-solid fa-circle-chevron-left"></i></span>
-                                <span class="if-not-collapsed"><i class="fa-solid fa-circle-chevron-down"></i></span>
-                            </div>
-                        </div>
-                    </a>
+                <li class="mx-2">
+                    <a href="/financeiro/formas-pagamento" class="menu-fecha"><i class="fa fa-credit-card mx-3"></i>Formas de Pagamento</a>
                 </li>
-                <!-- Submenu content -->
-                <div id='cadastro' class="collapse sidebar-submenu">
-                    <li class="mx-2">
-                        <a href="/servicos" class="menu-fecha"><span class="fa fa-archive mx-3"></span>Serviços</a>
-                    </li>
-                    <li class="mx-2">
-                            <a href="/categorias" class="menu-fecha"><span class="fa fa-tags mx-3"></span>Categorias</a>
-                        </li>
-                    <!-- <li class="mx-2">
+                <li class="mx-2">
+                    <a href="/financeiro/fluxos" class="menu-fecha"><i class="fa fa-code-fork mx-3"></i>Fluxos</a>
+                </li>
+                <li class="mx-2">
+                    <a href="/financeiro/contas" class="menu-fecha"><i class="fa fa-home mx-3"></i>Contas</a>
+                </li>
+                <li class="mx-2">
+                    <a href="/financeiro/centros" class="menu-fecha"><i class="fa fa-building mx-3"></i>Centros
+                        de Custo</a>
+                </li>
+            </div>
+        </ul>
+
+
+        <ul class="list-unstyled components mb-3">
+            <li class="">
+                <a href="#cadastro" data-toggle="collapse" aria-expanded="false" class="">
+                    <div class="d-flex">
+                        <div class=""> <span class="fa-solid fa-suitcase mx-3"></span> <span class="fw-bold">Cadastros</span></div>
+                        <div style="margin-left:51%"> <span class="if-collapsed"><i class="fa-solid fa-circle-chevron-left"></i></span>
+                            <span class="if-not-collapsed"><i class="fa-solid fa-circle-chevron-down"></i></span>
+                        </div>
+                    </div>
+                </a>
+            </li>
+            <!-- Submenu content -->
+            <div id='cadastro' class="collapse sidebar-submenu">
+                <li class="mx-2">
+                    <a href="/servicos" class="menu-fecha"><span class="fa fa-archive mx-3"></span>Serviços</a>
+                </li>
+                <li class="mx-2">
+                    <a href="/categorias" class="menu-fecha"><span class="fa fa-tags mx-3"></span>Categorias</a>
+                </li>
+                <!-- <li class="mx-2">
                             <a href="/fornecedores" class="menu-fecha"><span class="fa fa-male mx-3"></span>Fornecedores</a>
                         </li>
                         <li class="mx-2">
@@ -226,18 +226,18 @@
                             <a href="/marcas" class="menu-fecha"><span class="fa fa-tag mx-3"></span>Marcas</a>
                         </li> -->
 
-                </div>
-            </ul>
+            </div>
+        </ul>
 
 
-            <br>
-            <br>
+        <br>
+        <br>
 
 
 
-            <div class="footer">
+        <div class="footer">
 
-                <p style="line-height: 5px" class="fw-bold cor-light">
+            <!-- <p style="line-height: 5px" class="fw-bold cor-light">
                     <img class="" src="{{ env('APP_LINK_IMAGES') }}hdd.png" width="16px" style="">Recursos
                     Usados:
                 </p>
@@ -246,13 +246,13 @@
                 </p>
                 <p style="line-height: 2px" class="cor-light fw-small fw-light"> Pasta /public:
                     {{ tamanhoPasta('../public') }}
-                </p>
-                <p class="cor-light">
-
-                    Sistema desenvolvido por <i class="icon-heart" aria-hidden="true"></i>
-                    <a href="/" target="_blank">Sergio Salomão</a>
-                </p>
-            </div>
+                </p> -->
+           
+            <p class="cor-light">
+                Sistema desenvolvido por <i class="icon-heart" aria-hidden="true"></i>
+                <a href="/" target="_blank">Sergio Salomão</a>
+            </p>
+        </div>
 
     </div>
 </nav>

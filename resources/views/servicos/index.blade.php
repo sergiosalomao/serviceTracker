@@ -96,7 +96,7 @@
                         <td width="1%">
                             <div class=" d-flex align-items-center">
                                 <a class="btn-imagens" href="/servicos/edit/{{ $item->id }}">
-                                    <img src="{{ env('APP_LINK_IMAGES') }}edit.svg" width="18PX" height="18PX"></a>
+                                    <img src="{{ env('APP_LINK_IMAGES') }}edit.png" width="18PX" height="18PX"></a>
                                 <a class="btn-imagens" onclick="setaDadosModal('window.location.href=\'/servicos/delete/{{ $item->id }}\'')" data-toggle="modal" data-target="#delete-modal">
                                     <img src="{{ env('APP_LINK_IMAGES') }}trash.svg" width="18PX" height="18PX">
                                 </a>

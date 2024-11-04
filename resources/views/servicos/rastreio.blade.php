@@ -76,7 +76,7 @@
                         <div class=" d-flex align-items-center">
                             {{-- <td width="5%">
                                 <a class="btn-imagens" href="/estoque/edit/{{ $item->id }}">
-                            <img src="{{ env('APP_LINK_IMAGES') }}edit.svg" width="18PX" height="18PX"></a>
+                            <img src="{{ env('APP_LINK_IMAGES') }}edit.png" width="18PX" height="18PX"></a>
                             </td> --}}
                             <!--   <td width="5%" style="text-align: center">
                                 <a class="btn-imagens" onclick="setaDadosModal('window.location.href=\'/estoque/delete/{{ $item->id }}\'')" data-toggle="modal" data-target="#delete-modal">

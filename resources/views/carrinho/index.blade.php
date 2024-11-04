@@ -2,8 +2,19 @@
 @section('body')
 <div class="card">
     <div class="card">
+        <!-- verifica se tem parcela paga, se tiver nao mostra o cancelar nem o editar -->
         @php
+
+        $cobrancas = App\Models\Cobranca::where('solicitacao_id', request('id'))->first();
+
+        if ($cobrancas)
+        $pagamento = App\Models\Pagamento::where('status', '=', 'PAGO')->where('cobranca_id', $cobrancas->id)->count();
+        else
+        $pagamento = 0;
+
+
         $solicitacao = App\Models\Solicitacoes::find(request('id'));
+
         @endphp
         <div class="card-header">
             <div class="row ">
@@ -12,16 +23,16 @@
                     </span>
                 </div>
                 <div class="col-sm-6 direita">
-                    <span>{{$solicitacao['cliente']['nome']}} | <span>VENDA: <b>{{request('id')}}</b></span>
+                    <span>{{$solicitacao['cliente']['nome']}} | <span>SOLICITAÇÃO: <b>{{request('id')}}</b></span>
                 </div>
             </div>
         </div>
         <div class="card-body ">
             <div class="row p-3">
                 <div class="col-6 texto-esquerda">
-                    @if (($solicitacao->status == 'EM ANDAMENTO') || ($solicitacao->status == 'AGUARDANDO APROVAÇÃO'))
-                    <button class="btn btn-my-primary form-button " type="button" onclick="window.location.href='/carrinho/create/{{ request('id') }}'">Adicionar Serviço</button>
-                    @endIf
+                    @if (($pagamento <=0) && ($solicitacao->status == 'EM ANDAMENTO') || ($solicitacao->status == 'AGUARDANDO APROVAÇÃO'))
+                        <button class="btn btn-my-primary form-button " type="button" onclick="window.location.href='/carrinho/create/{{ request('id') }}'">Adicionar Serviço</button>
+                        @endIf
                 </div>
                 <div class="col-6 texto-direita">
                     {{-- <button class="btn btn-warning form-button" type="button"
@@ -55,9 +66,13 @@
                     <th class="" style="text-align: center">TEMPO ESTIMADO TOTAL</th>
                     <th class="" style="text-align: center">VALOR(UND)</th>
                     <th class="" style="text-align: center">VALOR TOTAL</th>
-                    @if (($solicitacao->status == 'EM ANDAMENTO') || ($solicitacao->status == 'AGUARDANDO APROVAÇÃO'))
-                    <th class="" colspan="3" style="text-align: center">AÇÕES</th>
-                    @endIf
+
+                    @if (($pagamento <=0) && ($solicitacao->status == 'EM ANDAMENTO') || ($solicitacao->status == 'AGUARDANDO APROVAÇÃO'))
+                        <th class="" colspan="3" style="text-align: center">AÇÕES</th>
+                        @endIf
+
+
+
                 </tr>
             </thead>
 
@@ -83,7 +98,7 @@
                     <span class="table-subtitulos fw-bold"> {{ $item['servico']['codigo'] }}</span>
                 </td>
 
-                <td width="30%" style="text-align: left">
+                <td width="25%" style="text-align: left">
                     <span class="table-subtitulos"> {{ $item['servico']['descricao'] }}</span>
                 </td>
                 @php
@@ -91,7 +106,7 @@
                 $formattedTime = \Carbon\CarbonInterval::seconds($totalSeconds)->cascade();
                 @endphp
                 <td width="10%" style="text-align: center">
-                    <span class="table-subtitulos fw-bold"> {{ $formattedTime->format('%H:%I') }}</span>
+                    <span class="table-subtitulos fw-bold"> {{ $formattedTime->format('%d dias, %H:%I') }}</span>
                 </td>
 
                 <td width="6%" style="text-align: center">
@@ -103,7 +118,7 @@
                 $formattedTime = \Carbon\CarbonInterval::seconds($totalSeconds)->cascade();
                 @endphp
                 <td width="10%" style="text-align: center">
-                    <span class="table-subtitulos fw-bold"> {{ $formattedTime->format('%H:%I') }}</span>
+                    <span class="table-subtitulos fw-bold"> {{ $formattedTime->format('%d dias, %H:%I') }}</span>
                 </td>
 
                 <td width="6%" style="text-align: center">
@@ -123,21 +138,22 @@
                 @endif
 
 
-                @if (($solicitacao->status == 'EM ANDAMENTO' && $total > 0) || ($solicitacao->status == 'AGUARDANDO APROVAÇÃO' && $total > 0))
-                <td width="1%">
-                    <div class=" d-flex align-items-center">
-                        <a class="btn-imagens" onclick="setaDadosModal('window.location.href=\'/carrinho/delete/{{ $item->id }}/{{ request('id') }}\'')" data-toggle="modal" data-target="#delete-modal">
-                            <img src="{{ env('APP_LINK_IMAGES') }}trash.svg" width="18PX" height="18PX">
-                        </a>
-                    </div>
-                </td>
-                @endIf
-                @if ($solicitacao->status == 'CONCLUIDA' )
-                <td width="1%">
 
-                </td>
+                @if (($pagamento <= 0) && ($solicitacao->status == 'EM ANDAMENTO' && $total > 0) || ($solicitacao->status == 'AGUARDANDO APROVAÇÃO' && $total > 0))
+                    <td width="1%">
+                        <div class=" d-flex align-items-center">
+                            <a class="btn-imagens" onclick="setaDadosModal('window.location.href=\'/carrinho/delete/{{ $item->id }}/{{ request('id') }}\'')" data-toggle="modal" data-target="#delete-modal">
+                                <img src="{{ env('APP_LINK_IMAGES') }}trash.svg" width="18PX" height="18PX">
+                            </a>
+                        </div>
+                    </td>
+                    @endIf
+
+
+
+                   
     </div>
-    @endIf
+   
 
 
 
@@ -155,10 +171,13 @@
             <td></td>
             <td></td>
             <td style="text-align: center"><b>{{$totalItens}}</b></td>
-            <td style="text-align: center"><b>{{ $formattedTime->format('%H:%I')}}</b></td>
+            <td style="text-align: center"><b>{{ $formattedTime->format('%d dias, %H:%I')}}</b></td>
             <td></td>
             <td></td>
-            <td></td>
+            <!-- se tiver parcelas paga mostra -->
+            @if (($pagamento <=0) && ($solicitacao->status == 'EM ANDAMENTO' && $total > 0) || ($solicitacao->status == 'AGUARDANDO APROVAÇÃO' && $total > 0))
+                <td></td>
+                @endif
         </tr>
     </tbody>
     </table>

@@ -128,25 +128,25 @@
 
 
                     
-                        <td width="3%">
+                        <td width="1%">
                         <div class=" d-flex align-items-center">
                          
                             @if ($item->status != 'CANCELADA')
                             <a class="btn-imagens" onclick="setaDadosModalBaixaPagamento('window.location.href=\'/pagamentos/baixar/{{ $item->cobranca_id }}/{{ $item->id }}\'')" data-toggle="modal" data-target="#baixapagamento-modal">
-                                <img src="{{ env('APP_LINK_IMAGES') }}pay.png" width="25PX" height="25PX" title="realiza a baixa do pagamento">
+                                <img src="{{ env('APP_LINK_IMAGES') }}pay.png" width="22PX" height="22PX" title="realiza a baixa do pagamento">
                             </a>
                             @endIf
                             
                             @if ($item->status != 'CANCELADA')
                             <a class="btn-imagens" onclick="setaDadosModalCancelaPagamento('window.location.href=\'/pagamentos/cancelar/{{ $item->cobranca_id }}/{{ $item->id }}/\'')" data-toggle="modal" data-target="#cancelapagamento-modal">
-                                <img src="{{ env('APP_LINK_IMAGES') }}cancel.png" width="18PX" height="18PX" title="cancela o pagamento">
+                                <img src="{{ env('APP_LINK_IMAGES') }}cancel.png" width="22PX" height="22PX" title="cancela o pagamento">
                             </a>
                             @endIf
 
 
                             <!-- @if ($item->status != 'CANCELADA')
                             <a class="btn-imagens" href="/solicitacoes/edit/{{ $item->id }}">
-                                <img src="{{ env('APP_LINK_IMAGES') }}edit.svg" width="18PX" height="18PX" title="edita a solicitacao"></a>
+                                <img src="{{ env('APP_LINK_IMAGES') }}edit.png" width="18PX" height="18PX" title="edita a solicitacao"></a>
                             @endIf -->
                           
 

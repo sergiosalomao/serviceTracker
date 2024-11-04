@@ -18,12 +18,14 @@ return new class extends Migration
             $table->id();
             $table->date('data_solicitacao')->null();
             $table->date('data_final')->nullable()->default(null);;
+            $table->date('data_prevista')->nullable()->default(null);
             $table->integer('cliente_id')->unsigned();
             $table->foreign('cliente_id')->references('id')->on('clientes');
             $table->decimal('valor', 10, 2)->nullable();
             $table->decimal('entrada', 10, 2)->nullable();
             $table->decimal('desconto', 10, 2)->nullable();
             $table->string('status')->nullable()->default('AGUARDANDO APROVAÇÃO');
+            $table->string('status_pagamento')->nullable()->default('ABERTO');
             $table->timestamps();
         });
     }

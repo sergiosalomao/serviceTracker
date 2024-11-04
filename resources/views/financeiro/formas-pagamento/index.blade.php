@@ -32,7 +32,7 @@
                                 <td width="10%">
                                     <div class=" d-flex align-items-center">
                                         <a class="btn-imagens" href="/financeiro/formas-pagamento/edit/{{ $item->id }}">
-                                            <img src="{{ env('APP_LINK_IMAGES') }}edit.svg" width="18px"
+                                            <img src="{{ env('APP_LINK_IMAGES') }}edit.png" width="18px"
                                                 height="18px"></a>
                                         <a class="btn-imagens"
                                             onclick="setaDadosModal('window.location.href=\'/financeiro/formas-pagamento/delete/{{ $item->id }}\'')"

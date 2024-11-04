@@ -23,8 +23,7 @@ class SolicitacoesController extends Controller
     public function index()
     {
         $clientes = Clientes::all();
-       
-        $dados = Solicitacoes::where('status', '!=', 'teste')->orderby('data_solicitacao', 'desc')->orderBy('id', 'desc')->orderBy('status', 'desc')->paginate(env('APP_PAGINATE'));
+        $dados = Solicitacoes::where('status', '!=', 'teste')->orderby('data_solicitacao', 'asc')->orderBy('id', 'asc')->orderBy('status', 'asc')->paginate(env('APP_PAGINATE'));
         return view('solicitacoes.index', ['clientes' => $clientes, 'dados' => $dados]);
     }
 
@@ -57,8 +56,18 @@ class SolicitacoesController extends Controller
             "entrada"       => (floatval($request->entrada)),
             "desconto"       => (floatval($request->desconto)),
             "status"       => $request['status'],
+
         ]);
         Solicitacoes::find($request->id)->update($dataSolicitacao->all());
+        $this->calcularDataPrevista($request->id);
+        // apaga todos os pagamentos
+        $cobrancas = Cobranca::where('solicitacao_id', $request->id)->first();
+
+        // apaga todas as cobrancas
+        if ($cobrancas)
+            Cobranca::where('id', $cobrancas->id)->delete();
+
+
 
         //gera cobranca
         $cobranca = new Cobranca();
@@ -67,8 +76,10 @@ class SolicitacoesController extends Controller
         $cobranca->entrada = $request->entrada;
         $cobranca->desconto = $request->desconto;
         $cobranca->data_vencimento = $datainicio;
+        $cobranca->forma_pagamento = $request->forma_pagamento;
         $cobranca->parcelas = $request->parcelas; // Número de parcelas
         $cobranca->save();
+
 
         // Gerar as parcelas
         $valor = floatval($request->valor);
@@ -99,6 +110,9 @@ class SolicitacoesController extends Controller
         $solicitacoes->cliente_id = $request['cliente_id'];
         $solicitacoes->data_solicitacao = $dt_inicio;
         $solicitacoes->save();
+        $this->calcularDataPrevista();
+
+
         $dados = Solicitacoes::paginate(env('APP_PAGINATE'));
         return redirect()->route('carrinho.index', ['id' => $solicitacoes['id']])->with(compact('dados'));
     }
@@ -119,10 +133,11 @@ class SolicitacoesController extends Controller
 
     public function pagamento(Solicitacoes $solicitacoes, Request $request)
     {
+       $formaspagamento = FormasPagamento::all();
         if (!$request->id) throw new \Exception("ID não informado!", 1);
         $solicitacoes = Solicitacoes::find($request->id);
         $valor = $request->valor;
-        return view('solicitacoes.pagamento', ['dados' => $solicitacoes, 'valor' => $valor]);
+        return view('solicitacoes.pagamento', ['dados' => $solicitacoes, 'valor' => $valor,'formaspagamento'=>$formaspagamento]);
     }
 
     public function cancela(Solicitacoes $solicitacoes, Request $request)
@@ -180,5 +195,47 @@ class SolicitacoesController extends Controller
         $dados = $query->paginate(env('APP_PAGINATE'));
 
         return view('solicitacoes.index', ['clientes' => $clientes, 'dados' => $dados]);
+    }
+
+   
+
+    private function calcularDataPrevista()
+    {
+        // Obter todas as solicitações em andamento
+        $solicitacoes = Solicitacoes::where('status', 'EM ANDAMENTO')->get();
+
+        foreach ($solicitacoes as $solicitacao) {
+            // Inicializar o tempo total em minutos
+            $tempoTotal = 0;
+
+            // Obter todos os itens da solicitação
+            $itensSolicitacao = ItensSolicitacoes::where('solicitacao_id', $solicitacao->id)->get();
+
+            // Somar o tempo estimado de cada item
+            foreach ($itensSolicitacao as $item) {
+                $tempoTotal += ($item['servico']['tempo_estimado'] * $item->qtd);
+            }
+
+            // Verificar a última solicitação anterior
+            $ultimaSolicitacao = Solicitacoes::where('id', '<', $solicitacao->id)
+                ->orderBy('id', 'desc')
+                ->first();
+
+            // Definir a data de referência
+            if ($ultimaSolicitacao && $ultimaSolicitacao->data_prevista) {
+                // Usar a data prevista da última solicitação como referência e converter para Carbon
+                $dataReferencia = Carbon::parse($ultimaSolicitacao->data_prevista);
+            } else {
+                // Se não houver, usar a data atual
+                $dataReferencia = Carbon::now();
+            }
+
+            // Calcular a nova data prevista
+            $dataPrevista = $dataReferencia->addMinutes($tempoTotal); // Adiciona o tempo total em minutos
+
+            // Atualizar a data prevista na solicitação
+            $solicitacao->data_prevista = $dataPrevista;
+            $solicitacao->save();
+        }
     }
 }

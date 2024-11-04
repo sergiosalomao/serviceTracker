@@ -14,7 +14,7 @@
                         onclick="window.location.href='/financeiro/movimentos/create'">Novo Movimento</button>
                     <button class="btn btn-warning form-button mb-4" type="button"
                         onclick="window.location.href='/financeiro/movimentos/lancamentos'">
-                        <img class="mx-1" src="{{ env('APP_LINK_IMAGES') }}edit.svg" width="18px" height="18px">
+                        <img class="mx-1" src="{{ env('APP_LINK_IMAGES') }}edit.png" width="18px" height="18px">
                         Gerenciar
                     </button>
 

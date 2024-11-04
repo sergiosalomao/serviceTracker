@@ -5,11 +5,11 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="utf-8">
-    <title>SistemaPDV - {{ env('APP_VER') }}</title>
+    <title>GestãoEmpresarial - {{ env('APP_VER') }}</title>
     <meta name="description" content="Sistema Homepass">
     <meta name="keywords" content="Desenvolvedor - Sergio Salomão Leite Filho" />
-    <meta name="author" content="comercialbonanca.com.br">
-    <meta name="reply-to" content="comercialbonanca.com.br">
+    <meta name="author" content="gestaoempresarial.com.br">
+    <meta name="reply-to" content="gestaoempresarial.com.br">
     <link rel="icon" href="{{ env('APP_LINK_IMAGES') }}favicon.ico" sizes="any" type="image/svg+xml">
 
     <meta property="og:image" content="{{ env('APP_URL') }}{{ env('APP_LINK_IMAGES') }}imagem_colocar.jpg">
@@ -37,7 +37,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>SistemaPDV {{ env('APP_VER') }}</title>
+    <title>Gestão Empresarial {{ env('APP_VER') }}</title>
 
 
 

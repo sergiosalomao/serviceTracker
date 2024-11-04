@@ -13,7 +13,7 @@
                     </span>
                 </div>
                 <div class="col-sm-6 direita">
-                    <span>{{$solicitacoes['cliente']['nome']}} | <span>VENDA: <b>{{request('id')}}</b></span>
+                    <span>{{$solicitacoes['cliente']['nome']}} | <span>SOLICITAÇÃO: <b>{{request('id')}}</b></span>
                 </div>
             </div>
         </div>

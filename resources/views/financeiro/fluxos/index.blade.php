@@ -43,7 +43,7 @@
                                 <td width="5%" class="texto-centro">
                                     <div class=" d-flex align-items-center">
                                         <a class="btn-imagens" href="/financeiro/fluxos/edit/{{ $item->id }}">
-                                            <img src="{{env('APP_LINK_IMAGES')}}edit.svg" width="18px" height="18px"></a>
+                                            <img src="{{env('APP_LINK_IMAGES')}}edit.png" width="18px" height="18px"></a>
                                         <a class="btn-imagens"
                                             onclick="setaDadosModal('window.location.href=\'/financeiro/fluxos/delete/{{ $item->id }}\'')"
                                             data-bs-toggle="modal" data-bs-target="#delete-modal">

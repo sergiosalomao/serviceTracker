@@ -41,6 +41,14 @@
                     <input id="desconto" name="desconto" type="text" class=" form-control form-control-sm mb-4" value="{{$desconto}}">
                 </div>
 
+                <div class="col-lg-12 mb-2"><label class="labels-form">Forma de Pagamento</label>
+                    <select id="forma_pagamento" name="forma_pagamento" type="text" class="form-select form-control-sm">
+                        @foreach ($formaspagamento as $formapagamento)
+                        <option value="{{$formapagamento->id}}">{{$formapagamento->forma}}</option>
+                        @endforeach
+                    </select>
+                </div>
+
                 <div class="col-lg-12 mb-2"><label class="labels-form">Parcelas</label>
                     <select id="2" name="parcelas" type="text" class="form-select form-control-sm">
                         <option value="1">1x</option>

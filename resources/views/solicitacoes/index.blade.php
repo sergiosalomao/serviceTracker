@@ -1,8 +1,9 @@
 @extends('home')
 @section('body')
+
 <div class="card">
     <div class="card-header titulo-form ">
-        Lista de Solicitações
+        Fila de Solicitações
     </div>
     <div class="card-body ">
 
@@ -70,20 +71,21 @@
                 <thead>
                     <tr>
                         <th class="" style="text-align: center">COD.</th>
-                        <th class="" style="text-align: center">DATA INICIO</th>
+                        <th class="" style="text-align: center">DATA</th>
                         <th class="" style="text-align: left">CLIENTE</th>
                         <th class="" style="text-align: left">SERVIÇOS</th>
                         <th class="" style="text-align: center">TEMPO ESTIMADO</th>
-
+                        <th class="" style="text-align: center">DATA PREVISTA</th>
                         <th class="" style="text-align: center">DATA CONCLUSÃO</th>
-                        <th class="" style="text-align: center">STATUS</th>
+                        <th class="" style="text-align: center">STATUS SOLICITACAO</th>
+                        <th class="" style="text-align: center">STATUS PAGAMENTO</th>
                         <th class="" colspan="1" style="text-align: center">AÇÕES</th>
                     </tr>
                 </thead>
                 <tbody>
                     @php
                     $valor_pago = 0;
-                 
+
                     $tempo = 0;
                     $valor = 0;
                     $servicos = [];
@@ -95,7 +97,7 @@
 
 
                     @php
-                   
+
 
                     $ItensSolicitacoes = App\Models\ItensSolicitacoes::where('solicitacao_id', $item->id)->get();
                     foreach($ItensSolicitacoes as $itemSolicitacao){
@@ -121,36 +123,37 @@
                     </td>
 
                     <td width="20%" style="text-align: left">
+
                         <span class="table-subtitulos cor-escura"> {{ $item['cliente']['nome'] }}</span>
+                        <span class="table-subtitulos cor-escura"> Tel . {{ formataTelefone($item['cliente']['telefone']) }}</span>
+                        <span class="table-subtitulos cor-escura"> {{ $item['cliente']['email'] }}</span>
+                        <p></p>
                     </td>
-                    <td width="15%" style="text-align: left">
-                        <span class="table-subtitulos cor-escura">
-
-                            @php
-                            $ItensSolicitacoes = App\Models\ItensSolicitacoes::where('solicitacao_id', $item->id)->get();
-                            @endphp
-
+                    <td width="30%" style="text-align: left;vertical-align: middle">
+                        @php
+                        $ItensSolicitacoes = App\Models\ItensSolicitacoes::where('solicitacao_id', $item->id)->get();
+                        @endphp
+                        <div class="subtitulo">
                             @foreach($ItensSolicitacoes as $itemSolicitacao)
+                            <div class="item-solicitacao">
+                                <img src="{{ env('APP_LINK_IMAGES') }}task.png" width="12px" height="12px">
+                                {{ $itemSolicitacao['servico']['descricao'] }}
+                            </div>
+                            @endforeach
 
-                            <img src="{{ env('APP_LINK_IMAGES') }}task.png" width="16PX" height="16PX"> {{ $itemSolicitacao['servico']['descricao'] }}
-                            <p>
-                            <p>
-
-                                @endforeach
-
-                        </span>
+                        </div>
                     </td>
 
 
                     @if ( $formattedTime)
-                    <td width="10%" style="text-align: center">
-                        <span class="table-subtitulos cor-escura"><img src="{{ env('APP_LINK_IMAGES') }}clockmini.png" width="18PX" height="18PX" title="tempo estimado pra concluir a solicitação">
-                            {{ $formattedTime->format('%H:%I')    }}
+                    <td width="10%" style="text-align: center;vertical-align: middle">
+                        <span class="titulo cor-escura"><img src="{{ env('APP_LINK_IMAGES') }}clockmini.png" width="18PX" height="18PX" title="tempo estimado pra concluir a solicitação">
+                            {{ $formattedTime->format('%d dias, %H:%I')    }}
                         </span>
                     </td>
                     @endIf
 
-                  
+
 
 
                     @if ( !$formattedTime)
@@ -162,99 +165,118 @@
                     @endIf
 
 
+                    <!-- data prevista -->
+                    @if ($item->data_prevista != null)
+                    <td width="10%" style="text-align: center;vertical-align: middle" class="titulo">
+                        {{ date('d/m/Y', strtotime($item->data_prevista)) }}
+                    </td>
+                    @endIf
+                    @if ($item->data_prevista == null)
+                    <td width="10%" style="text-align: center;vertical-align: middle">
+                        -
+                    </td>
+                    @endIf
 
+
+                    <!-- data final -->
                     @if ($item->data_final != null)
-                    <td width="10%" style="text-align: center">
+                    <td width="10%" style="text-align: center;vertical-align: middle" class="titulo">
                         {{ date('d/m/Y', strtotime($item->data_final)) }}
                     </td>
                     @endIf
                     @if ($item->data_final == null)
-                    <td width="10%" style="text-align: center">
+                    <td width="10%" style="text-align: center;vertical-align: middle">
                         -
                     </td>
                     @endIf
 
 
 
-
+                    <!-- status solicitacao -->
                     @if ($item->status == 'EM ANDAMENTO')
-                    <td width="5%" style="text-align: center">
+                    <td width="5%" style="text-align: center;vertical-align: middle">
                         <span class=" badge bg-warning  cor-escura"> {{ $item->status }}</span>
                     </td>
                     @endIf
                     @if ($item->status == 'AGUARDANDO APROVAÇÃO')
-                    <td width="5%" style="text-align: center">
+                    <td width="5%" style="text-align: center;vertical-align: middle">
                         <span class=" badge bg-primary  cor-escura"> {{ $item->status }}</span>
                     </td>
                     @endIf
 
-                    @if ($item->status == 'PAGA')
-                    <td width="5%" style="text-align: center">
+                    @if ($item->status == 'CONCLUIDA')
+                    <td width="5%" style="text-align: center;vertical-align: middle">
 
                         <span class="badge bg-success  cor-escura"> {{ $item->status }}</span>
                     </td>
                     @endIf
 
                     @if ($item->status == 'CANCELADA')
-                    <td width="5%" style="text-align: center">
+                    <td width="5%" style="text-align: center;vertical-align: middle">
 
                         <span class="badge bg-danger  cor-escura"> {{ $item->status }}</span>
                     </td>
                     @endIf
 
-                    @if ($item->status == 'AGUARDANDO PAGAMENTO')
-                    <td width="5%" style="text-align: center">
+                    <!-- status pagamento -->
+                    @if ($item->status_pagamento == 'ABERTO')
+                    <td width="5%" style="text-align: center;vertical-align: middle">
 
-                        <span class="badge bg-info  cor-escura"> {{ $item->status }}</span>
+                        <span class="badge bg-danger  cor-escura"> {{ $item->status_pagamento }}</span>
                     </td>
                     @endIf
-                    @if ($item->status == 'CONCLUIDA')
-                    <td width="5%" style="text-align: center">
+                    @if ($item->status_pagamento == 'PAGO')
+                    <td width="5%" style="text-align: center;vertical-align: middle">
 
-                        <span class="badge bg-success  cor-escura"> {{ $item->status }}</span>
+                        <span class="badge bg-success  cor-escura"> {{ $item->status_pagamento }}</span>
                     </td>
                     @endIf
 
+                    <!-- verifica se tem parcela paga, se tiver nao mostra o cancelar nem o editar -->
+                    @php
+                    $cobrancas = App\Models\Cobranca::where('solicitacao_id', $item->id)->first();
+                    if($cobrancas)
+                    $pagamento = App\Models\Pagamento::where('status', '=', 'PAGO')->where('cobranca_id', $cobrancas->id)->count();
+                    else
+                    $pagamento = 0;
+                    @endphp
 
-                    {{-- <td>
-                                {{ date('d-m-Y', strtotime($item->data)) }}
-                    </td> --}}
-
-                    <td width="3%">
-                        <div class=" d-flex align-items-center">
+                    <td width="5%" style="text-align: center;vertical-align: middle">
+                        <div class=" d-flex align-items-center;">
                             @if ($item->status != 'CANCELADA')
                             <a class="btn-imagens" href="/carrinho/{{ $item->id }}">
-                                <img src="{{ env('APP_LINK_IMAGES') }}servicos.png" width="18PX" height="18PX" title="mostra os servicos"></a>
-                            @endIf
-                            @if ($item->status != 'CANCELADA')
-                            <a class="btn-imagens" onclick="setaDadosModalCancela('window.location.href=\'/solicitacoes/cancela/{{ $item->id }}\'')" data-toggle="modal" data-target="#cancela-modal">
-                                <img src="{{ env('APP_LINK_IMAGES') }}cancel.png" width="18PX" height="18PX" title="cancela a solicitacao">
-                            </a>
+                                <img src="{{ env('APP_LINK_IMAGES') }}search4.png" width="18PX" height="18PX" title="mostra os servicos"></a>
                             @endIf
 
-                            @if ($item->status != 'CANCELADA')
+                            @if ($item->status == 'EM ANDAMENTO' || $item->status == 'AGUARDANDO APROVAÇÃO')
                             <a class="btn-imagens" onclick="setaDadosModalFinaliza('window.location.href=\'/solicitacoes/finalizar/{{ $item->id }}\'')" data-toggle="modal" data-target="#finaliza-modal">
-                                <img src="{{ env('APP_LINK_IMAGES') }}finalizado.png" width="18PX" height="18PX" title="finaliza a solicitacao">
+                                <img src="{{ env('APP_LINK_IMAGES') }}finalizado.png" width="18px" height="18px" title="finaliza a solicitacao">
                             </a>
+                            @endif
+
+
+                            @if ($item->status == 'EM ANDAMENTO' || $item->status == 'AGUARDANDO APROVAÇÃO'|| $item->status == 'CONCLUIDA')
+                            <a class="btn-imagens disabled" href="/solicitacoes/edit/{{ $item->id }}">
+                                <img src="{{ env('APP_LINK_IMAGES') }}edit.png" width="18PX" height="18PX" title="edita a solicitacao"></a>
                             @endIf
 
-                            @if ($item->status != 'CANCELADA')
-                            <a class="btn-imagens" href="/solicitacoes/edit/{{ $item->id }}">
-                                <img src="{{ env('APP_LINK_IMAGES') }}edit.svg" width="18PX" height="18PX" title="edita a solicitacao"></a>
-                            @endIf
-                            {{-- @if ($item->status != 'CANCELADA' && $item->status != 'PAGA')
-                                        <a class="btn-imagens" href="/solicitacoes/edit/{{ $item->id }}">
-                            <img src="{{ env('APP_LINK_IMAGES') }}edit.svg" width="18PX" height="18PX"></a>
-                            @endIf
-                            }}
+                            @if ($item->status == 'EM ANDAMENTO' || $item->status == 'AGUARDANDO APROVAÇÃO'|| $item->status == 'CONCLUIDA' && $pagamento <=0)
+                                <a class="btn-imagens" onclick="setaDadosModalCancela('window.location.href=\'/solicitacoes/cancela/{{ $item->id }}\'')" data-toggle="modal" data-target="#cancela-modal">
+                                <img src="{{ env('APP_LINK_IMAGES') }}cancel.png" width="18PX" height="18PX" title="cancela a solicitacao">
+                                </a>
+                                @endIf
 
-
-
-                            {{-- <a class="btn-imagens"
-                                            onclick="setaDadosModal('window.location.href=\'/solicitacoes/delete/{{ $item->id }}\'')"
-                            data-toggle="modal" data-target="#delete-modal">
-                            <img src="{{ env('APP_LINK_IMAGES') }}trash.svg" width="18PX" height="18PX">
-                            </a> --}}
+                                @if ($pagamento <= 0)
+                                    <a class="btn-imagens"
+                                    onclick="setaDadosModal('window.location.href=\'/solicitacoes/delete/{{ $item->id }}\'')"
+                                    data-toggle="modal" data-target="#delete-modal">
+                                    <img src="{{ env('APP_LINK_IMAGES') }}trash.svg" width="18PX" height="18PX">
+                                    </a>
+                                    @else
+                                    <a class="btn-imagens disabled" style="pointer-events: none; opacity: 0.4;" title="Desabilitado">
+                                        <img src="{{ env('APP_LINK_IMAGES') }}trash.svg" width="18PX" height="18PX" title="nao pode apagar porque tem pagamento realizado">
+                                    </a>
+                                    @endif
                         </div>
                     </td>
 
@@ -281,4 +303,6 @@
     </div>
 </div>
 @include('layouts.paginacao')
+
+
 @endsection

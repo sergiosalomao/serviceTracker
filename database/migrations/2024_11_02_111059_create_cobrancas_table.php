@@ -27,6 +27,8 @@ return new class extends Migration
             $table->date('data_vencimento');
             $table->integer('parcelas')->nullable()->default('1');;
             $table->string('status')->default('PENDENTE'); // Status: pendente, pago, vencido
+            $table->integer('forma_pagamento')->unsigned();
+            $table->foreign('forma_pagamento')->references('id')->on('formas_pagamento');
 
             $table->timestamps();
         });

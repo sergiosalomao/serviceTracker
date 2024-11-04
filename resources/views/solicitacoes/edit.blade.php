@@ -5,6 +5,19 @@
     <div class="card">
         @php
         $solicitacao = App\Models\Solicitacoes::find(request('id'));
+
+
+        $itens = App\Models\ItensSolicitacoes::where('solicitacao_id', request('id'))
+        ->with('servico') 
+        ->get();
+
+        // Soma os valores dos serviços
+        $valorTotalServicos = $itens->sum(function ($item) {
+        return $item->servico->valor  * $item->qtd ?? 0; 
+        });
+
+
+
         @endphp
         <div class="card-header">
             <div class="row ">
@@ -19,7 +32,7 @@
         </div>
         <div class="card-body">
             @php
-            $valor = number_format((float) request('valor'), 2, '.', '');
+            $valorTotalServicos = number_format((float) $valorTotalServicos, 2, '.', '');
             @endphp
 
 
@@ -41,16 +54,45 @@
 
                     <div class="col-lg-12">
                         <label class="labels-form">Desconto(R$)</label>
-                        <span class="h4 fa fa-question-circle-o mx-2" style="color:cadetblue;cursor: pointer;" title="O valor total da compra não pode ser alterado."></span>
+                        <span class="h4 fa fa-question-circle-o mx-2" style="color:cadetblue;cursor: pointer;" title="desconto no valor total dos servicos."></span>
                         <input id="desconto" name="desconto" type="text" class=" form-control form-control-sm mb-4" value="{{$dados->desconto}}">
                     </div>
 
                     <div class="col-lg-12">
-                        <label class="labels-form">Valor</label>
-                        <span class="h4 fa fa-question-circle-o mx-2" style="color:cadetblue;cursor: pointer;" title="O valor total da compra não pode ser alterado."></span>
-                        <input id="valor" name="valor" type="text" class=" form-control form-control-sm mb-4" readonly value="{{$dados->valor}}">
+                        <label class="labels-form">Valor Total</label>
+                        <span class="h4 fa fa-question-circle-o mx-2" style="color:cadetblue;cursor: pointer;" title="O valor total dos servicos adicionados."></span>
+                        <input id="valor" name="valor" type="text" class=" form-control form-control-sm mb-4" readonly value="{{$valorTotalServicos}}">
                     </div>
 
+                    <div class="col-lg-12 mb-2"><label class="labels-form">Forma de Pagamento</label>
+                        <select id="forma_pagamento" name="forma_pagamento" type="text" class="form-select form-control-sm">
+                            @if ($dados->formapagamento != NULL)
+                            <option value="{{$dados->formapagamento->id}}" selected>{{$dados->formapagamento->forma}}</option>
+                            @endif
+                            @foreach ($formaspagamento as $formapagamento)
+                            <option value="{{$formapagamento->id}}">{{$formapagamento->forma}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-lg-12 mb-2"><label class="labels-form">Parcelas</label>
+                        <select id="2" name="parcelas" type="text" class="form-select form-control-sm">
+                            @if ($dados->parcelas != NULL)
+                            <option selected value="{{$dados->parcelas}}">{{$dados->parcelas}}x</option>
+                            @endif
+                            <option value="1">1x</option>
+                            <option value="2">2x</option>
+                            <option value="3">3x</option>
+                            <option value="4">4x</option>
+                            <option value="5">5x</option>
+                            <option value="6">6x</option>
+                            <option value="7">7x</option>
+                            <option value="8">8x</option>
+                            <option value="9">9x</option>
+                            <option value="10">10x</option>
+                            <option value="11">11x</option>
+                            <option value="12">12x</option>
+                        </select>
+                    </div>
 
                     <div class="col-lg-2"><label class="labels-form">Status</label>
                         <select name="status" type="text" class="form-select form-control ">
