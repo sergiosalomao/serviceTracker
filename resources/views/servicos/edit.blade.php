@@ -17,7 +17,7 @@
                     <input id="1" name="codigo" type="text" class="form-control form-control-sm mb-4" placeholder="" value="{{ $dados->codigo }}">
                 </div>
                 <div class="col-lg-6">
-                    <label class="labels-form">Descricao do Serviço</label>
+                    <label class="labels-form">Serviço</label>
                     <input id="1" name="descricao" type="text" class="form-control form-control-sm mb-4" value="{{ $dados->descricao }}">
 
                 </div>
@@ -54,7 +54,14 @@
                 </div>
             </div>
 
-
+           
+            <div class="col-12">
+                    <label class="labels-form">DESCRIÇÃO</label>
+                    <textarea name="anotacao" class="form-control mb-4" id="anotacao" rows="4">{{$dados->anotacao}}</textarea>
+                </div>
+           
+         
+                     
 
 
             <div class="row mt-3">

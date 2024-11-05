@@ -257,7 +257,7 @@ select {
   border-color: var(--cor-fundo-media);
   border-style: solid;
   border-radius: 0px;
-  border-width: 0px 0px 1px 0 !important;
+  border-width: 1 !important;
   -webkit-transition: 0.3s !important;
   transition: 0.3s !important;
   outline: none !important;
@@ -273,7 +273,7 @@ select:focus {
   border-color: var(--cor-principal) !important;
   border-style: solid !important;
   border-radius: 0px !important;
-  border-width: 0px 0px 1px 0 !important;
+  border-width: 1 !important;
   background-color: var(--cor-fundo-claro-x) !important;
 }
 
@@ -281,6 +281,8 @@ option {
   color: var(--cor-principal) !important;
   font-weight: bold;
   background-color: white !important;
+ 
+  border-radius: 0px;
 }
 
 

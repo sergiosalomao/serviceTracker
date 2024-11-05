@@ -16,7 +16,7 @@
                 </div>
 
                 <div class="col-lg-6">
-                    <label class="labels-form">Descricao do Serviço</label>
+                    <label class="labels-form">Serviço</label>
                     <input id="1" name="descricao" type="text" class="form-control form-control-sm mb-4" placeholder="">
                 </div>
                 <div class="col-lg-2">
@@ -46,12 +46,19 @@
                         <option value="NAO">NAO</option>
                     </select>
                 </div>
+                <div class="col-12">
+                    <label class="labels-form">DESCRIÇÃO</label>
+                    <textarea rows="3" cols="30" placeholder="Descreva o serviço..." name="anotacao" class="form-control mb-4"></textarea>
+                </div>
+
                 <div class="row mt-3">
                     <div class="col-12">
                         <button class="btn btn-my-secondary" type="button" onclick="window.location.href='/servicos'">Voltar</button>
                         <button class="btn btn-success" type="submit">Gravar</button>
                     </div>
                 </div>
+
+
             </div>
         </form>
 

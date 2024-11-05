@@ -57,6 +57,7 @@ class FormasPagamentoController extends Controller
 
     public function destroy(Request $request)
     {
+   
         if (!$request->id) throw new \Exception("ID não informado!", 1);
         try {
             $formaspagamento = FormasPagamento::find($request->id)->delete();

@@ -1,9 +1,92 @@
 @extends('home')
 @section('body')
+<style>
+    .item-solicitacao p {
+        margin: 0;
+        /* Remove a margem do <p> */
+        padding: 0;
+        /* Remove o padding do <p> */
+        display: inline;
+        /* Faz o <p> se comportar como um elemento inline */
+    }
+</style>
+
+
+<div class="container-fluid my-4">
+    <div class="row">
+        <!-- Card: Solicitações -->
+        <div class="col-lg-2 col-md-6 mb-4">
+            <div class="card text-white bg-primary h-100 shadow">
+                <div class="card-header">Solicitações</div>
+                <div class="card-body d-flex flex-column justify-content-center align-items-center">
+                    <h5 class="card-title fw-large-x titulo">{{$dashboard['totalsolicitacoes']}}</h5>
+                    <p class="card-text">Total de solicitações registradas.</p>
+                </div>
+            </div>
+        </div>
+
+          <!-- Card: Em aguardando aprovacao -->
+          <div class="col-lg-2 col-md-6 mb-4">
+            <div class="card text-white bg-secondary h-100 shadow">
+                <div class="card-header">Aguardando Aprovação</div>
+                <div class="card-body d-flex flex-column justify-content-center align-items-center">
+                    <h5 class="card-title fw-large-x titulo">{{$dashboard['andamento']}}</h5>
+                    <p class="card-text">Serviços ainda não definidos.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card: Em Andamento -->
+        <div class="col-lg-2 col-md-6 mb-4">
+            <div class="card text-white bg-warning h-100 shadow">
+                <div class="card-header">Em Andamento</div>
+                <div class="card-body d-flex flex-column justify-content-center align-items-center">
+                    <h5 class="card-title fw-large-x titulo">{{$dashboard['andamento']}}</h5>
+                    <p class="card-text">Solicitações ainda em processo.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card: Concluídas -->
+        <div class="col-lg-2 col-md-6 mb-4">
+            <div class="card text-white bg-success h-100 shadow">
+                <div class="card-header">Concluídas</div>
+                <div class="card-body d-flex flex-column justify-content-center align-items-center">
+                    <h5 class="card-title fw-large-x titulo">{{$dashboard['concluida']}}</h5>
+                    <p class="card-text">Solicitações finalizadas com sucesso.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card: Tempo Médio de Entrega -->
+        <div class="col-lg-2 col-md-6 mb-4">
+            <div class="card text-white bg-info h-100 shadow">
+                <div class="card-header">Tempo Médio de Entrega</div>
+                <div class="card-body d-flex flex-column justify-content-center align-items-center">
+                    <h5 class="card-title fw-large-x titulo">{{$dashboard['media']}}</h5>
+                    <p class="card-text">Tempo médio para completar uma solicitação.</p>
+                </div>
+            </div>
+        </div>
+
+          <!-- Card: cancelado -->
+          <div class="col-lg-2 col-md-6 mb-4">
+            <div class="card text-white bg-danger h-100 shadow">
+                <div class="card-header">Canceladas</div>
+                <div class="card-body d-flex flex-column justify-content-center align-items-center">
+                    <h5 class="card-title fw-large-x titulo">{{$dashboard['cancelada']}}</h5>
+                    <p class="card-text">Solicitações canceladas.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 
 <div class="card">
     <div class="card-header titulo-form ">
-        Fila de Solicitações
+        Solicitações
     </div>
     <div class="card-body ">
 
@@ -27,7 +110,7 @@
                     @csrf
                     <div class="row">
                         <div class="col-sm-1 ">
-                            <input id="codigo" class="form-control me-2" type="text" name="codigo" placeholder="" aria-label="Search">
+                            <input id="codigo" class="form-control me-2" type="text" name="codigo" placeholder="Pesquisa Codigo..." aria-label="Search">
                         </div>
                         <div class="col-sm-8 ">
                             <select type="search" id="pesquisa" class="selectpicker" data-width="100%" name="pesquisa" data-show-subtext="true" data-live-search="true" class="form-select">
@@ -115,29 +198,31 @@
 
                     @endphp
 
-                    <td width="2%" style="text-align: center">
+                    <td width="2%" style="text-align: center;vertical-align: middle">
                         <span class="table-subtitulos cor-escura"> {{ $item->id }}</span>
                     </td>
-                    <td width="7%" style="text-align: center">
+                    <td width="7%" style="text-align: center;vertical-align: middle">
                         {{ date('d/m/Y', strtotime($item->data_solicitacao)) }}
                     </td>
 
                     <td width="20%" style="text-align: left">
-
+<p>
                         <span class="table-subtitulos cor-escura"> {{ $item['cliente']['nome'] }}</span>
-                        <span class="table-subtitulos cor-escura"> Tel . {{ formataTelefone($item['cliente']['telefone']) }}</span>
-                        <span class="table-subtitulos cor-escura"> {{ $item['cliente']['email'] }}</span>
-                        <p></p>
+                        <span class="table-subtitulos cor-escura"> Tel.: {{ formataTelefone($item['cliente']['telefone']) }}</span>
+                        <span class="table-subtitulos cor-escura"> email:{{ $item['cliente']['email'] }}</span></p>
+                       
                     </td>
                     <td width="30%" style="text-align: left;vertical-align: middle">
                         @php
                         $ItensSolicitacoes = App\Models\ItensSolicitacoes::where('solicitacao_id', $item->id)->get();
                         @endphp
+
                         <div class="subtitulo">
                             @foreach($ItensSolicitacoes as $itemSolicitacao)
                             <div class="item-solicitacao">
                                 <img src="{{ env('APP_LINK_IMAGES') }}task.png" width="12px" height="12px">
-                                {{ $itemSolicitacao['servico']['descricao'] }}
+                                <p>
+                                    {{ $itemSolicitacao['servico']['descricao'] }}
                             </div>
                             @endforeach
 
@@ -148,7 +233,8 @@
                     @if ( $formattedTime)
                     <td width="10%" style="text-align: center;vertical-align: middle">
                         <span class="titulo cor-escura"><img src="{{ env('APP_LINK_IMAGES') }}clockmini.png" width="18PX" height="18PX" title="tempo estimado pra concluir a solicitação">
-                            {{ $formattedTime->format('%d dias, %H:%I')    }}
+                            <p>
+                                {{ $formattedTime->format('%d dias, %H:%I')    }}
                         </span>
                     </td>
                     @endIf
@@ -159,7 +245,8 @@
                     @if ( !$formattedTime)
                     <td width="10%" style="text-align: center">
                         <span class="table-subtitulos cor-escura"><img src="{{ env('APP_LINK_IMAGES') }}clockmini.png" width="18PX" height="18PX" title="tempo estimado pra concluir a solicitação">
-                            00:00
+                            <p>
+                                00:00
                         </span>
                     </td>
                     @endIf

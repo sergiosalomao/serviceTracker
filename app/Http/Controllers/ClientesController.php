@@ -69,6 +69,7 @@ class ClientesController extends Controller
 
     public function store(Clientes $clientes, Request $request)
     {
+
         try {
             $clientes->nome = $request['nome'];
             $clientes->telefone = $request['telefone'];
@@ -92,6 +93,18 @@ class ClientesController extends Controller
         return redirect()->route('clientes.index')->with(compact('clientes'))->with('message-success', 'Dados Salvos!');
     }
 
+    public function storeRapido(Clientes $clientes, Request $request)
+    {
+
+        $clientes->nome = $request['nome'];
+        $clientes->telefone = $request['telefone'];
+        $clientes->email = $request['email'];
+        $clientes->save();
+        $clientes = Clientes::orderBy('id', 'desc')->paginate(env('APP_PAGINATE'));
+
+        return redirect()->route('solicitacoes.create')->with(compact('clientes'))->with('message-success', 'Cliente Adicionado');
+    }
+
     public function destroy(Request $request)
     {
         if (!$request->id) throw new \Exception("ID não informado!", 1);
@@ -111,47 +124,10 @@ class ClientesController extends Controller
         $query = Clientes::query();
         $query = ($request->pesquisa != 'null') ? $query->where('nome', 'LIKE', '%' . $request->pesquisa . '%') : $query;
         $query = ($request->pesquisa != 'null') ? $query->Orwhere('telefone', 'LIKE', '%' . $request->pesquisa . '%') : $query;
-
         $query = $query->orderBy('id', 'desc');
         $dados = $query->paginate(env('APP_PAGINATE'));
 
         $clientes = Clientes::all();
         return view('clientes.index', ['dados' => $dados, 'clientes' => $clientes]);
     }
-
-
-
-
-
-
-
-
-
-
-    #funcoes reference a conta do cliente------------------------------------------------------
-
-
-
-  
-
-    
-
-   
-
-
-   public function detalhesConta(Request $request)
-    {
-
-        $valor = Parcelas::where('status', '!=', 'CANCELADA')->where('cobranca_id', $request->id)->sum('valor');
-        $pago = Parcelas::where('valor_pago', '>', 0)->where('cobranca_id', $request->id)->sum('valor_pago');
-        $aberto = Parcelas::where('status', 'ABERTA')->where('cobranca_id', $request->id)->sum('valor_pago');
-        $total_registros = Parcelas::where('status', '!=', 'CANCELADA')->where('cobranca_id', $request->id)->count();
-
-        $dados = Parcelas::where('cobranca_id', '=', $request->id)->with(['cobranca'])->orderby('vencimento', 'asc')->paginate(env('APP_PAGINATE'));
-
-        return view('clientes.contas.detalhes', ['dados' => $dados, 'valor' => $valor, 'pago' => $pago, 'aberto' => $aberto]);
-    }
-    
-
-
 }

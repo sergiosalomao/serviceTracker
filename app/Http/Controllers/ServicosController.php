@@ -42,6 +42,7 @@ class ServicosController extends Controller
                 "status"       => trim($request->status),
                 "tempo_estimado"       => strtr($request->tempo_estimado, ',', '.'),
                 "valor"       => strtr($request->valor, ',', '.'),
+                "anotacao"       => $request->anotacao,
             ]);
 
             Servicos::find($request->id)->update($data->all());
@@ -63,6 +64,7 @@ class ServicosController extends Controller
             $servicos->valor = (float)str_replace(",", ".", $request['valor']);
             $servicos->tempo_estimado = $request['tempo_estimado'];
             $servicos->descricao = $descricao;
+            $servicos->anotacao = $request['anotacao'];
             $servicos->save();
         } catch (Exception $e) {
             session()->flash('message-warning', 'Occorreu um Erro');

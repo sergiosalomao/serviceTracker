@@ -19,7 +19,7 @@
         <div class="card-header">
             <div class="row ">
                 <div class="col-sm-6 esquerda titulo fw-media uppercase">
-                    Solicitações de Serviços | <span class=" fw-small-x ">Lista
+                    Serviços | <span class=" fw-small-x ">Lista
                     </span>
                 </div>
                 <div class="col-sm-6 direita">

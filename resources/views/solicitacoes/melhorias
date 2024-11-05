@@ -1,0 +1,5 @@
+1. notificar por email quando é gerado um novo servico ou cobranca e disparar para o cliente
+2. historico de alteracoes para auditoria do sistema
+3. historico de servicos por cliente (tela de historico)
+4.Gerenciamento de Usuários e Permissões: Definir diferentes perfis de acesso (ex.: administrador, atendente, técnico),
+5. campo observacao na tela de servicos 

@@ -9,7 +9,7 @@ class Servicos extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'id', 'categoria_id', 'descricao', 'status','codigo','tempo_estimado','valor'
+        'id', 'categoria_id', 'descricao', 'status','codigo','tempo_estimado','valor','anotacao'
     ];
     protected $table = 'servicos';
 

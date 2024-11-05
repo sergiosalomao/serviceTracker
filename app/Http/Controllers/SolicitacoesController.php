@@ -24,8 +24,55 @@ class SolicitacoesController extends Controller
     {
         $clientes = Clientes::all();
         $dados = Solicitacoes::where('status', '!=', 'teste')->orderby('data_solicitacao', 'asc')->orderBy('id', 'asc')->orderBy('status', 'asc')->paginate(env('APP_PAGINATE'));
-        return view('solicitacoes.index', ['clientes' => $clientes, 'dados' => $dados]);
+        $dashboard = $this->atualizaDashboard();
+        return view('solicitacoes.index', ['clientes' => $clientes, 'dados' => $dados,'dashboard'=>$dashboard]);
     }
+
+    public function atualizaDashboard(){
+        $solicitacoes = Solicitacoes::all();
+        $dashboard['totalsolicitacoes'] = count($solicitacoes);
+
+        $solicitacoes = Solicitacoes::where('status','AGUARDANDO APROVAÇÃO')->get();
+        $dashboard['aguardando'] = count($solicitacoes);
+
+        $solicitacoes = Solicitacoes::where('status','EM ANDAMENTO')->get();
+        $dashboard['andamento'] = count($solicitacoes);
+
+        $solicitacoes = Solicitacoes::where('status','CONCLUIDA')->get();
+        $dashboard['concluida'] = count($solicitacoes);
+
+        $solicitacoes = Solicitacoes::where('status','CANCELADA')->get();
+        $dashboard['cancelada'] = count($solicitacoes);
+
+
+
+
+
+        $servicosConcluidos = Solicitacoes::where('status', 'CONCLUIDA')->get();
+        $totalDuracao = 0;
+        $quantidadeServicos = $servicosConcluidos->count();
+        foreach ($servicosConcluidos as $servico) {
+            $dataInicio = Carbon::parse($servico->data_solicitacao);
+            $dataConclusao = Carbon::parse($servico->data_final);
+            $duracao = $dataInicio->diffInHours($dataConclusao);
+            $totalDuracao += $duracao;
+        }
+      
+        
+        if ($quantidadeServicos > 0) {
+            $tempoMedioEntrega = $totalDuracao / $quantidadeServicos;
+        } else {
+            $tempoMedioEntrega = 0; // Evita divisão por zero
+        }
+        
+        $dashboard['media'] = $tempoMedioEntrega;  
+        
+
+
+       
+        return $dashboard;
+    }
+    
 
     public function create()
     {
@@ -96,12 +143,13 @@ class SolicitacoesController extends Controller
         }
 
         $dados = Solicitacoes::all();
-        return redirect()->route('solicitacoes.index')->with(compact('dados'));
+        return redirect()->route('solicitacoes.index')->with(compact('dados'))->with('message-success', 'Solicitação Criada com sucesso!');;
     }
 
 
     public function store(Solicitacoes $solicitacoes, Request $request)
     {
+     
         $dt_inicio = Carbon::now();
         $dt_inicio->format('Y-m-d h:i:s');
         if (!$request->cliente_id)
@@ -114,7 +162,7 @@ class SolicitacoesController extends Controller
 
 
         $dados = Solicitacoes::paginate(env('APP_PAGINATE'));
-        return redirect()->route('carrinho.index', ['id' => $solicitacoes['id']])->with(compact('dados'));
+        return redirect()->route('carrinho.index', ['id' => $solicitacoes['id']])->with(compact('dados'));;
     }
 
     public function destroy(Request $request)
@@ -133,7 +181,7 @@ class SolicitacoesController extends Controller
 
     public function pagamento(Solicitacoes $solicitacoes, Request $request)
     {
-       $formaspagamento = FormasPagamento::all();
+        $formaspagamento = FormasPagamento::all();
         if (!$request->id) throw new \Exception("ID não informado!", 1);
         $solicitacoes = Solicitacoes::find($request->id);
         $valor = $request->valor;
@@ -194,7 +242,9 @@ class SolicitacoesController extends Controller
         $query = $query->orderBy('data_solicitacao', 'desc');
         $dados = $query->paginate(env('APP_PAGINATE'));
 
-        return view('solicitacoes.index', ['clientes' => $clientes, 'dados' => $dados]);
+        $dashboard = $this->atualizaDashboard();
+        return view('solicitacoes.index', ['clientes' => $clientes, 'dados' => $dados,'dashboard'=>$dashboard]);
+
     }
 
    

@@ -34,11 +34,11 @@
                                         <a class="btn-imagens" href="/financeiro/formas-pagamento/edit/{{ $item->id }}">
                                             <img src="{{ env('APP_LINK_IMAGES') }}edit.png" width="18px"
                                                 height="18px"></a>
-                                        <a class="btn-imagens"
-                                            onclick="setaDadosModal('window.location.href=\'/financeiro/formas-pagamento/delete/{{ $item->id }}\'')"
-                                            data-bs-toggle="modal" data-bs-target="#delete-modal">
-                                            <img src="{{ env('APP_LINK_IMAGES') }}trash.svg" width="18px" height="18px">
-                                        </a>
+                                       
+
+                                        <a class="btn-imagens"  onclick="setaDadosModal('window.location.href=\'/financeiro/formas-pagamento/delete/{{ $item->id }}\'')" data-bs-toggle="modal" data-bs-target="#delete-modal">
+                                        <img src="{{ env('APP_LINK_IMAGES') }}trash.svg" width="18px" height="18px">
+                                    </a>
                                     </div>
                                 </td>
                             </tr>
@@ -52,5 +52,6 @@
             </div>
         </div>
     </div>
+    
     @include('layouts.paginacao')
 @endsection

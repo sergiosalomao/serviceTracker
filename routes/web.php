@@ -65,6 +65,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/delete/{id}', [ClientesController::class, 'destroy'])->name('clientes.destroy');
         Route::post('/update', [ClientesController::class, 'update'])->name('clientes.update');
         Route::post('/store', [ClientesController::class, 'store'])->name('clientes.store');
+        Route::post('/storerapido', [ClientesController::class, 'storeRapido'])->name('clientes.storerapido');
         Route::post('/pesquisa', [ClientesController::class, 'pesquisa'])->name('clientes.pesquisa');
         Route::get('/historico/{id}', [ClientesController::class, 'historico'])->name('clientes.historico');
 

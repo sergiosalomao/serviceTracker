@@ -71,7 +71,7 @@
                         <td width="10%" style="text-align: center">
                             <span class="cor-escura"> {{ $item->tempo_estimado}}</span>
                         </td>
-                        <td width="5%" style="text-align: center">
+                        <td width="10%" style="text-align: center">
                             <span class="table-subtitulos cor-escura">
                                 {{ 'R$ ' . number_format($item->valor, 2, ',', '.') }}</span>
                         </td>

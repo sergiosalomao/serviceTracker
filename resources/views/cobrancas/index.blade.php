@@ -114,7 +114,7 @@
                         <span class="table-subtitulos cor-escura"> {{ $item['solicitacao']['cliente']['nome'] }}</span>
                     </td>
                     <td width="10%" style="text-align: center">
-                    <span class="badge bg-info  cor-escura"> {{ $item['formapagamento']['forma']}}</span>
+                    <span class="badge bg-secondary  cor-escura"> {{ $item['formapagamento']['forma']}}</span>
                     </td>
                     <td width="10%" style="text-align: center">
                         <span class="table-subtitulos cor-escura"> {{ $item->parcelas }}</span>

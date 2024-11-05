@@ -25,7 +25,7 @@
             <li class="">
                 <a href="#acompanhamento" data-toggle="collapse" aria-expanded="false" class="">
                     <div class="d-flex">
-                        <div class=""> <span class="fa-solid fa-suitcase mx-3"></span> <span class="fw-bold">Solicitações</span> <span class="badge bg-success fw-small">
+                        <div class=""> <span class="fa-solid fa-suitcase mx-3"></span> <span class="fw-bold">Solicitações</span> <span class="badge bg-danger fw-small">
                                 {{ count($solicitacoes) }}</span>
                         </div>
                         <div style="margin-left:35%"> <span class="if-collapsed"><i class="fa-solid fa-circle-chevron-left"></i></span>
@@ -76,14 +76,18 @@
             </div>
         </ul>
 
-
+        @php
+        $cobrancas = App\Models\Cobranca::where('status','PENDENTE')->get();
+        @endphp
 
         <ul class="list-unstyled components mb-3">
             <li class="">
                 <a href="#cobrancas" data-toggle="collapse" aria-expanded="false" class="">
                     <div class="d-flex">
-                        <div class=""> <span class="fa-solid fa-suitcase mx-3"></span> <span class="fw-bold">Cobrancas </span></div>
-                        <div style="margin-left:51%"> <span class="if-collapsed"><i class="fa-solid fa-circle-chevron-left"></i></span>
+                        <div class=""> <span class="fa-solid fa-suitcase mx-3"></span> <span class="fw-bold">Cobrancas </span>
+                        <span class="badge bg-danger fw-small">
+                        {{ count($cobrancas) }}</span></div>
+                        <div style="margin-left:40%"> <span class="if-collapsed"><i class="fa-solid fa-circle-chevron-left"></i></span>
                             <span class="if-not-collapsed"><i class="fa-solid fa-circle-chevron-down"></i></span>
                         </div>
                     </div>
@@ -92,7 +96,7 @@
             <!-- Submenu content -->
             <div id='cobrancas' class="collapse sidebar-submenu">
                 <li class="mx-2">
-                    <a href="/cobrancas" class="menu-fecha"><span class="fa fa-external-link mx-3"></span>Cobrancas
+                    <a href="/cobrancas" class="menu-fecha"><i class="fa fa-list mx-3"></i></span>Listar
                     </a>
                 </li>
 

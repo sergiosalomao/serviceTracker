@@ -22,6 +22,8 @@ return new class extends Migration
             $table->decimal('valor')->nullable()->default('0');
             $table->string('tempo_estimado');
             $table->string('status')->default('SIM');
+            $table->text('anotacao')->nullable();
+
             $table->timestamps();
         });
     }
